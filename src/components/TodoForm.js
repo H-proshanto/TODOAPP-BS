@@ -1,18 +1,32 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  Button,
-  ScrollView,
-} from "react-native";
+import { StyleSheet, Text, View, TextInput, ScrollView } from "react-native";
 import DataContext from "../../DataContext";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Logout } from "./LogoutButton";
 import { CreateTodoButton } from "./CreateTodoButton";
+import { UpdateTodoButton } from "./UpdateTodoButton";
 
-export const TodoForm = ({ navigation }) => {
-  const { userName, setTitle, setDescription } = useContext(DataContext);
+export const TodoForm = ({ navigation, route }) => {
+  const {
+    userName,
+    title,
+    description,
+    setTitle,
+    setDescription,
+    getTitle,
+    getDescription,
+  } = useContext(DataContext);
+  const taskId = route.params?.taskId;
+  const view = route.params?.view;
+
+  useEffect(() => {
+    if (view === "read" || view === "update") {
+      setTitle(getTitle(taskId));
+      setDescription(getDescription(taskId));
+    } else {
+      setTitle("");
+      setDescription("");
+    }
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -29,20 +43,32 @@ export const TodoForm = ({ navigation }) => {
             style={styles.titleInput}
             placeholder="Enter Title Here"
             onChangeText={setTitle}
+            editable={view === "read" ? false : true}
+            value={title}
           />
         </View>
         <View>
           <TextInput
             style={styles.descriptionText}
-            placeholder="Enter Description Here"
+            placeholder={view === "read" ? "" : "Enter Description Here"}
             onChangeText={setDescription}
             multiline={true}
+            editable={view === "read" ? false : true}
+            value={description}
           />
         </View>
       </ScrollView>
-      <View style={styles.buttonContainer}>
-        <CreateTodoButton navigation={navigation} />
-      </View>
+      {view === "read" ? (
+        ""
+      ) : view === "update" ? (
+        <View style={styles.buttonContainer}>
+          <UpdateTodoButton navigation={navigation} taskId={taskId} />
+        </View>
+      ) : (
+        <View style={styles.buttonContainer}>
+          <CreateTodoButton navigation={navigation} />
+        </View>
+      )}
     </View>
   );
 };

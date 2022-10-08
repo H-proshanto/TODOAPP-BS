@@ -15,15 +15,36 @@ export function DataProvider({ children }) {
     setDescription("");
     setTaskList([]);
   };
+
+  const getTitle = (id) => taskList[id].title;
+
+  const getDescription = (id) => taskList[id].description;
+
   const updateTaskList = () => {
     if (title === "") {
       Alert.alert("Title field can't be empty");
       return false;
     }
+
     setTaskList([
       ...taskList,
       { title, description, status: "pending", id: taskList.length },
     ]);
+    Keyboard.dismiss();
+
+    return true;
+  };
+
+  const updateSpecificTask = (id) => {
+    const newTasks = taskList.map((task) => {
+      if (task.id === id) {
+        task.title = title;
+        task.description = description;
+      }
+      return task;
+    });
+
+    setTaskList(newTasks);
     Keyboard.dismiss();
     return true;
   };
@@ -37,6 +58,7 @@ export function DataProvider({ children }) {
       }
       return task;
     });
+
     setTaskList(newTasks);
   };
 
@@ -63,6 +85,11 @@ export function DataProvider({ children }) {
         taskList,
         clearAllData,
         toggleCompletion,
+        getTitle,
+        getDescription,
+        title,
+        description,
+        updateSpecificTask,
       }}
     >
       {children}

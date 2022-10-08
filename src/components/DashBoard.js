@@ -6,7 +6,7 @@ import { CreateTodoFormButton } from "./CreateTodoFormButton";
 import { TodoList } from "./TodoList";
 
 export const DashBoard = ({ navigation }) => {
-  const { userName, taskList } = useContext(DataContext);
+  const { userName } = useContext(DataContext);
 
   return (
     <View style={styles.container}>
@@ -24,7 +24,7 @@ export const DashBoard = ({ navigation }) => {
         </View>
       </View>
       <>
-        <TodoList />
+        <TodoList navigation={navigation} />
       </>
     </View>
   );

@@ -3,11 +3,16 @@ import { View, StyleSheet, FlatList } from "react-native";
 import DataContext from "../../DataContext";
 import { TodoView } from "./TodoView";
 
-export const TodoList = () => {
+export const TodoList = ({ navigation }) => {
   const { taskList } = useContext(DataContext);
 
   const renderItem = ({ item }) => (
-    <TodoView title={item.title} status={item.status} id={item.id} />
+    <TodoView
+      title={item.title}
+      status={item.status}
+      id={item.id}
+      navigation={navigation}
+    />
   );
 
   return (

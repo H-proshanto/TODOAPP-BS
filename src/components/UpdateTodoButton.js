@@ -1,16 +1,20 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { useContext } from "react";
+import DataContext from "../../DataContext";
 
-export const CreateTodoFormButton = ({ navigation }) => {
+export const UpdateTodoButton = ({ navigation, taskId }) => {
+  const { updateSpecificTask } = useContext(DataContext);
+
   return (
     <View style={styles.body}>
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate("TodoForm");
+          if (updateSpecificTask(taskId)) navigation.pop();
         }}
       >
         <View style={styles.createButton}>
-          <Text style={styles.text}>Create New</Text>
+          <Text style={styles.text}>Update</Text>
         </View>
       </TouchableOpacity>
     </View>
@@ -22,13 +26,15 @@ const styles = StyleSheet.create({
     marginTop: 21,
   },
   createButton: {
-    backgroundColor: "white",
-    width: 60,
+    backgroundColor: "black",
+    borderRadius: 14,
+    width: 100,
   },
   text: {
-    color: "black",
+    color: "white",
     fontSize: 14,
+    padding: 14,
+    fontWeight: "bold",
     textAlign: "center",
-    textDecorationLine: "underline",
   },
 });

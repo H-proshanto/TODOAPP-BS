@@ -1,13 +1,19 @@
 import { useContext } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import DataContext from "../../DataContext";
 
-export const TodoView = ({ title, status, id }) => {
+export const TodoView = ({ title, status, id, navigation }) => {
   const { toggleCompletion } = useContext(DataContext);
+
   return (
     <View style={styles.todoConatainer}>
-      <View style={styles.titleContainer}>
+      <TouchableOpacity
+        style={styles.titleContainer}
+        onPress={() => {
+          navigation.navigate("TodoForm", { taskId: id, view: "read" });
+        }}
+      >
         <Text
           style={
             status === "done"
@@ -21,7 +27,15 @@ export const TodoView = ({ title, status, id }) => {
         >
           {title}
         </Text>
-      </View>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.updateBtn}
+        onPress={() => {
+          navigation.navigate("TodoForm", { taskId: id, view: "update" });
+        }}
+      >
+        <Image style={styles.icon} source={require("../icons/edit.png")} />
+      </TouchableOpacity>
       <BouncyCheckbox
         style={styles.checkbox}
         onPress={(isChecked) => {
@@ -50,5 +64,13 @@ const styles = StyleSheet.create({
   checkbox: {
     alignSelf: "center",
     justifyContent: "flex-end",
+  },
+  updateBtn: {
+    height: 35,
+    width: 35,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+    alignSelf: "center",
   },
 });
