@@ -11,7 +11,10 @@ export const ButtonUI = ({ navigation, title, onPress, taskId }) => {
           else if (title === "Update" && onPress(taskId)) navigation.pop();
           else if (title === "Create New") navigation.navigate("TodoForm");
           else if (title === "logout") {
-            navigation.dispatch(StackActions.replace("Home", {}));
+            navigation.reset({
+              index: 0,
+              routes: [{ name: "Home" }],
+            });
             onPress();
           }
         }}

@@ -68,10 +68,12 @@ const styles = StyleSheet.create({
   headerText: {
     fontWeight: "bold",
     fontSize: 28,
-    marginTop: 28,
+    marginTop: 42,
   },
   loginTextContainer: {
     flex: 0.2,
+    marginTop: 21,
+    marginBottom: 21,
   },
   loginInput: {
     marginTop: 35,
