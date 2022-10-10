@@ -5,7 +5,6 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 
 export const TodoView = ({ title, status, id, timeStamp, navigation }) => {
   const { toggleCompletion } = useContext(DataContext);
-  // console.log(time);
 
   return (
     <View style={styles.todoConatainer}>
