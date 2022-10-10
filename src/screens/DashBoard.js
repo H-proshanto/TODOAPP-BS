@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
-import { HeaderUI } from "../components/header.js";
+import { HeaderUI } from "../components/Header.js";
 import { ButtonUI } from "../components/Button.js";
 import { TodoList } from "../components/TodoList";
 

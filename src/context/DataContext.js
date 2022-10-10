@@ -10,16 +10,15 @@ export function DataProvider({ children }) {
   const [taskList, setTaskList] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  const getTitle = (id) => taskList[id].title;
+  const getDescription = (id) => taskList[id].description;
+
   const clearAllData = () => {
     setUserName("");
     setTitle("");
     setDescription("");
     setTaskList([]);
   };
-
-  const getTitle = (id) => taskList[id].title;
-
-  const getDescription = (id) => taskList[id].description;
 
   const updateTaskList = () => {
     if (title === "") {

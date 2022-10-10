@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View } from "react-native";
 import DataContext from "../context/DataContext";
+import { StyleSheet, Text, View } from "react-native";
 import { ButtonUI } from "./Button";
 import { useContext } from "react";
 
