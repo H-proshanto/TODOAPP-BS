@@ -11,6 +11,7 @@ export const TodoList = ({ navigation }) => {
       title={item.title}
       status={item.status}
       id={item.id}
+      timeStamp={item.timeStamp}
       navigation={navigation}
     />
   );

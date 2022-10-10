@@ -3,8 +3,9 @@ import DataContext from "../context/DataContext";
 import { useContext } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 
-export const TodoView = ({ title, status, id, navigation }) => {
+export const TodoView = ({ title, status, id, timeStamp, navigation }) => {
   const { toggleCompletion } = useContext(DataContext);
+  // console.log(time);
 
   return (
     <View style={styles.todoConatainer}>
@@ -28,6 +29,8 @@ export const TodoView = ({ title, status, id, navigation }) => {
           {title}
         </Text>
       </TouchableOpacity>
+      <Text style={styles.timeStamp}>{timeStamp}</Text>
+
       <TouchableOpacity
         style={styles.updateBtn}
         onPress={() => {
@@ -72,5 +75,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     alignSelf: "center",
+  },
+  timeStamp: {
+    alignSelf: "center",
+    fontSize: 10,
+    color: "grey",
+    fontStyle: "italic",
+    marginRight: 7,
   },
 });
