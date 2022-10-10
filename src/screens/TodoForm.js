@@ -1,9 +1,14 @@
-import { StyleSheet, Text, View, TextInput, ScrollView } from "react-native";
-import DataContext from "../../DataContext";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  ScrollView,
+  Button,
+} from "react-native";
+import DataContext from "../context/DataContext";
 import { useContext, useEffect } from "react";
-import { Logout } from "./LogoutButton";
-import { CreateTodoButton } from "./CreateTodoButton";
-import { UpdateTodoButton } from "./UpdateTodoButton";
+import { ButtonUI } from "../components/Button";
 
 export const TodoForm = ({ navigation, route }) => {
   const {
@@ -14,6 +19,9 @@ export const TodoForm = ({ navigation, route }) => {
     setDescription,
     getTitle,
     getDescription,
+    updateTaskList,
+    updateSpecificTask,
+    clearAllData,
   } = useContext(DataContext);
   const taskId = route.params?.taskId;
   const view = route.params?.view;
@@ -35,7 +43,11 @@ export const TodoForm = ({ navigation, route }) => {
           <Text style={styles.headerText}>Simple ToDo</Text>
           <View style={styles.userInfo}>
             <Text style={styles.username}>{`Mr.${userName}`}</Text>
-            <Logout navigation={navigation} />
+            <ButtonUI
+              navigation={navigation}
+              title={"logout"}
+              onPress={clearAllData}
+            />
           </View>
         </View>
         <View style={styles.titleContainer}>
@@ -62,11 +74,20 @@ export const TodoForm = ({ navigation, route }) => {
         ""
       ) : view === "update" ? (
         <View style={styles.buttonContainer}>
-          <UpdateTodoButton navigation={navigation} taskId={taskId} />
+          <ButtonUI
+            navigation={navigation}
+            taskId={taskId}
+            onPress={updateSpecificTask}
+            title={"Update"}
+          />
         </View>
       ) : (
         <View style={styles.buttonContainer}>
-          <CreateTodoButton navigation={navigation} />
+          <ButtonUI
+            navigation={navigation}
+            onPress={updateTaskList}
+            title={"Create"}
+          />
         </View>
       )}
     </View>

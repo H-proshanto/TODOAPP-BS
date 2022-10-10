@@ -8,6 +8,7 @@ export function DataProvider({ children }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [taskList, setTaskList] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const clearAllData = () => {
     setUserName("");
@@ -90,6 +91,8 @@ export function DataProvider({ children }) {
         title,
         description,
         updateSpecificTask,
+        setIsLoggedIn,
+        isLoggedIn,
       }}
     >
       {children}

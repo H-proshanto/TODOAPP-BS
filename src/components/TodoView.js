@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
-import DataContext from "../../DataContext";
+import DataContext from "../context/DataContext";
 
 export const TodoView = ({ title, status, id, navigation }) => {
   const { toggleCompletion } = useContext(DataContext);

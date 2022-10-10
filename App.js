@@ -1,9 +1,9 @@
-import { HomeScreen } from "./src/components/HomeScreen";
-import { DashBoard } from "./src/components/DashBoard";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { DataProvider } from "./DataContext";
-import { TodoForm } from "./src/components/TodoForm";
+import { DataProvider } from "./src/context/DataContext";
+import { Home } from "./src/screens/Home";
+import { DashBoard } from "./src/screens/DashBoard";
+import { TodoForm } from "./src/screens/TodoForm";
 
 const Stack = createStackNavigator();
 
@@ -18,7 +18,7 @@ export default function App() {
             headerStyle: { backgroundColor: "orange" },
           }}
         >
-          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Home" component={Home} />
           <Stack.Screen
             name="DashBoard"
             component={DashBoard}

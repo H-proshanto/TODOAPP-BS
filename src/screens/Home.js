@@ -1,8 +1,9 @@
 import { StyleSheet, Text, View, TextInput, Button } from "react-native";
-import DataContext from "../../DataContext";
-import { useContext, useEffect } from "react";
+import DataContext from "../context/DataContext";
+import { useContext } from "react";
+import { StackActions } from "@react-navigation/native";
 
-export const HomeScreen = ({ navigation }) => {
+export const Home = ({ navigation }) => {
   const { userName, setUserName, authUser } = useContext(DataContext);
 
   return (
@@ -24,7 +25,7 @@ export const HomeScreen = ({ navigation }) => {
           title="Next"
           onPress={() => {
             if (authUser()) {
-              navigation.navigate("DashBoard");
+              navigation.dispatch(StackActions.replace("DashBoard", {}));
             }
           }}
         />
