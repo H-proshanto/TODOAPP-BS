@@ -1,11 +1,11 @@
+import HelperMethodsContext from "../context/HelperMethodsContext";
 import { useContext } from "react";
 import { StyleSheet, View } from "react-native";
 import { ButtonUI } from "../components/Button";
-import HooksContext from "../context/HooksContext";
 
 export const ReadOnlyViewBtns = ({ navigation, view, status, taskId }) => {
   const { deleteTask, updateTaskList, updateSpecificTask } =
-    useContext(HooksContext);
+    useContext(HelperMethodsContext);
 
   return (
     <>

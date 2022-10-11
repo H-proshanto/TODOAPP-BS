@@ -1,4 +1,5 @@
 import HooksContext from "../context/HooksContext";
+import HelperMethodsContext from "../context/HelperMethodsContext";
 import { StyleSheet, View, TextInput, ScrollView, Text } from "react-native";
 import { useContext, useEffect } from "react";
 import { HeaderUI } from "../components/Header";
@@ -8,12 +9,11 @@ export const TodoForm = ({ navigation, route }) => {
   const taskId = route.params?.taskId;
   const view = route.params?.view;
   const status = route.params?.status;
+  const { getTitle, getDescription } = useContext(HelperMethodsContext);
   const {
     title,
     description,
     errorMessage,
-    getTitle,
-    getDescription,
     setDescription,
     setTitle,
     setErrorMessage,

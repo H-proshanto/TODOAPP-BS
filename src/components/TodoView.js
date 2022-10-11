@@ -1,10 +1,10 @@
+import HelperMethodsContext from "../context/HelperMethodsContext";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
-import HooksContext from "../context/HooksContext";
 import { useContext } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 
 export const TodoView = ({ title, status, id, timeStamp, navigation }) => {
-  const { toggleCompletion } = useContext(HooksContext);
+  const { toggleCompletion } = useContext(HelperMethodsContext);
 
   return (
     <View style={styles.todoConatainer}>
