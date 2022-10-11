@@ -11,7 +11,7 @@ export const TodoView = ({ title, status, id, timeStamp, navigation }) => {
       <TouchableOpacity
         style={styles.titleContainer}
         onPress={() => {
-          navigation.navigate("TodoForm", { taskId: id, view: "read" });
+          navigation.navigate("TodoForm", { taskId: id, view: "read", status });
         }}
       >
         <Text
@@ -44,6 +44,7 @@ export const TodoView = ({ title, status, id, timeStamp, navigation }) => {
       )}
       <BouncyCheckbox
         style={styles.checkbox}
+        isChecked={status === "done" ? true : false}
         onPress={(isChecked) => {
           isChecked = !isChecked;
           toggleCompletion(id);

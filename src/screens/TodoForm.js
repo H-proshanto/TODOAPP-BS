@@ -1,25 +1,23 @@
 import DataContext from "../context/DataContext";
 import { StyleSheet, View, TextInput, ScrollView, Text } from "react-native";
 import { useContext, useEffect } from "react";
-import { ButtonUI } from "../components/Button";
 import { HeaderUI } from "../components/Header";
+import { ReadOnlyViewBtns } from "../components/ReadOnlyViewBtns";
 
 export const TodoForm = ({ navigation, route }) => {
+  const taskId = route.params?.taskId;
+  const view = route.params?.view;
+  const status = route.params?.status;
   const {
     title,
     description,
-    setTitle,
-    setDescription,
+    errorMessage,
     getTitle,
     getDescription,
-    updateTaskList,
-    updateSpecificTask,
-    errorMessage,
+    setDescription,
+    setTitle,
     setErrorMessage,
-    deleteTask,
   } = useContext(DataContext);
-  const taskId = route.params?.taskId;
-  const view = route.params?.view;
 
   useEffect(() => {
     if (view === "read" || view === "update") {
@@ -65,34 +63,12 @@ export const TodoForm = ({ navigation, route }) => {
         </View>
       </ScrollView>
       <ScrollView>
-        {view === "read" ? (
-          <View style={styles.buttonContainer}>
-            <ButtonUI navigation={navigation} taskId={taskId} title={"Edit"} />
-            <ButtonUI
-              navigation={navigation}
-              taskId={taskId}
-              title={"Delete"}
-              onPress={deleteTask}
-            />
-          </View>
-        ) : view === "update" ? (
-          <View style={styles.buttonContainer}>
-            <ButtonUI
-              navigation={navigation}
-              taskId={taskId}
-              onPress={updateSpecificTask}
-              title={"Update"}
-            />
-          </View>
-        ) : (
-          <View style={styles.buttonContainer}>
-            <ButtonUI
-              navigation={navigation}
-              onPress={updateTaskList}
-              title={"Create"}
-            />
-          </View>
-        )}
+        <ReadOnlyViewBtns
+          view={view}
+          status={status}
+          navigation={navigation}
+          taskId={taskId}
+        />
       </ScrollView>
     </View>
   );
@@ -141,13 +117,6 @@ const styles = StyleSheet.create({
     marginRight: 28,
     borderWidth: 2,
     padding: 7,
-  },
-  buttonContainer: {
-    flex: 0.7,
-    marginTop: 35,
-    alignItems: "center",
-    flexDirection: "row",
-    justifyContent: "space-evenly",
   },
   errorMessage: {
     color: "red",

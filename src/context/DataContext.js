@@ -4,7 +4,7 @@ import { Alert, Keyboard } from "react-native";
 const DataContext = createContext();
 
 export function DataProvider({ children }) {
-  const [taskId, setTaskId] = useState(0);
+  const [key, setKey] = useState(0);
   const [userName, setUserName] = useState("");
   const [sessionName, setSessionName] = useState("");
   const [title, setTitle] = useState("");
@@ -12,8 +12,15 @@ export function DataProvider({ children }) {
   const [taskList, setTaskList] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const getTitle = (id) => taskList[id].title;
-  const getDescription = (id) => taskList[id].description;
+  const getTitle = (id) => {
+    const [title] = taskList.filter((task) => task.id === id);
+    return title;
+  };
+
+  const getDescription = (id) => {
+    const [description] = taskList.filter((task) => task.id === id);
+    return description;
+  };
 
   const getTime = () => {
     const today = new Date();
@@ -43,11 +50,11 @@ export function DataProvider({ children }) {
         title,
         description,
         status: "pending",
-        id: taskId,
+        id: key,
         timeStamp: getTime(),
       },
     ]);
-    setTaskId(taskId + 1);
+    setKey(key + 1);
     Keyboard.dismiss();
 
     return true;
