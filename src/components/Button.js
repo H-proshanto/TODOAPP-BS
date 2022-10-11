@@ -17,6 +17,8 @@ export const ButtonUI = ({ navigation, title, onPress, taskId }) => {
             onPress();
           } else if (title === "Edit") {
             navigation.navigate("TodoForm", { taskId, view: "update" });
+          } else if (title === "Delete") {
+            onPress(taskId, navigation);
           }
         }}
       >
@@ -64,6 +66,7 @@ const styles = StyleSheet.create({
     fontSize: 21,
     textAlign: "right",
     textDecorationLine: "underline",
+    marginRight: 7,
   },
   text: {
     color: "white",
@@ -80,8 +83,8 @@ const styles = StyleSheet.create({
   logoutButton: {
     borderRadius: 14,
     backgroundColor: "#03396c",
-    padding: 4,
-    width: 42,
+    padding: 5,
+    width: 50,
   },
   logoutText: {
     color: "white",

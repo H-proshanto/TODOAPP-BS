@@ -4,13 +4,13 @@ import { ButtonUI } from "./Button";
 import { useContext } from "react";
 
 export const HeaderUI = ({ navigation }) => {
-  const { userName, clearAllData } = useContext(DataContext);
+  const { sessionName, clearAllData } = useContext(DataContext);
 
   return (
     <View style={styles.headerContainer}>
       <Text style={styles.headerText}>Simple ToDo</Text>
       <View style={styles.userInfo}>
-        <Text style={styles.username}>{`Mr.${userName}`}</Text>
+        <Text style={styles.username}>{`Mr.${sessionName}`}</Text>
         <ButtonUI
           navigation={navigation}
           title={"logout"}
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
   username: {
     fontWeight: "bold",
     fontSize: 21,
-    marginTop: 21,
+    marginTop: 23,
     marginLeft: 21,
   },
   userInfo: {

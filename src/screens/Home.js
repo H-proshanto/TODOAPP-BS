@@ -11,14 +11,19 @@ import { useContext, useEffect, useState } from "react";
 import { StackActions } from "@react-navigation/native";
 
 export const Home = ({ navigation }) => {
-  const { userName, setUserName, errorMessage, setErrorMessage } =
-    useContext(DataContext);
+  const {
+    userName,
+    setUserName,
+    errorMessage,
+    setErrorMessage,
+    setSessionName,
+  } = useContext(DataContext);
   const [isMaxLength, setIsMaxLength] = useState(false);
 
   useEffect(() => {
-    if (userName.length > 7) {
+    if (userName.length > 5) {
       setIsMaxLength(true);
-      setErrorMessage("Maximum characters allowed : 7");
+      setErrorMessage("Maximum characters allowed : 5");
     } else {
       setIsMaxLength(false);
       setErrorMessage("");
@@ -55,6 +60,7 @@ export const Home = ({ navigation }) => {
             title="Next"
             onPress={() => {
               if (isValidUserName()) {
+                setSessionName(userName);
                 navigation.dispatch(StackActions.replace("DashBoard"));
               }
             }}

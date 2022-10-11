@@ -4,7 +4,9 @@ import { Alert, Keyboard } from "react-native";
 const DataContext = createContext();
 
 export function DataProvider({ children }) {
+  const [taskId, setTaskId] = useState(0);
   const [userName, setUserName] = useState("");
+  const [sessionName, setSessionName] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [taskList, setTaskList] = useState([]);
@@ -23,6 +25,7 @@ export function DataProvider({ children }) {
   };
 
   const clearAllData = () => {
+    setUserName("");
     setTitle("");
     setDescription("");
     setTaskList([]);
@@ -40,10 +43,11 @@ export function DataProvider({ children }) {
         title,
         description,
         status: "pending",
-        id: taskList.length,
+        id: taskId,
         timeStamp: getTime(),
       },
     ]);
+    setTaskId(taskId + 1);
     Keyboard.dismiss();
 
     return true;
@@ -66,6 +70,21 @@ export function DataProvider({ children }) {
     setTaskList(newTasks);
     Keyboard.dismiss();
     return true;
+  };
+
+  const deleteTask = (id, navigation) => {
+    Alert.alert("Are you sure you want to delete this task", "", [
+      {
+        text: "Confirm",
+        onPress: () => {
+          navigation.pop();
+          setTaskList(taskList.filter((task) => task.id !== id));
+        },
+      },
+      {
+        text: "Cancel",
+      },
+    ]);
   };
 
   const toggleCompletion = (id) => {
@@ -99,6 +118,9 @@ export function DataProvider({ children }) {
         updateSpecificTask,
         errorMessage,
         setErrorMessage,
+        setSessionName,
+        sessionName,
+        deleteTask,
       }}
     >
       {children}

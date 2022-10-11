@@ -16,6 +16,7 @@ export const TodoForm = ({ navigation, route }) => {
     updateSpecificTask,
     errorMessage,
     setErrorMessage,
+    deleteTask,
   } = useContext(DataContext);
   const taskId = route.params?.taskId;
   const view = route.params?.view;
@@ -48,6 +49,9 @@ export const TodoForm = ({ navigation, route }) => {
             value={title}
           />
         </View>
+
+        <Text style={styles.errorMessage}>{errorMessage}</Text>
+
         <View>
           <Text style={styles.inputTitle}>Description</Text>
           <TextInput
@@ -59,31 +63,37 @@ export const TodoForm = ({ navigation, route }) => {
             value={description}
           />
         </View>
-        <Text style={styles.errorMessage}>{errorMessage}</Text>
       </ScrollView>
-      {view === "read" ? (
-        <View style={styles.readOnlybuttonContainer}>
-          <ButtonUI navigation={navigation} taskId={taskId} title={"Edit"} />
-          <ButtonUI navigation={navigation} taskId={taskId} title={"Delete"} />
-        </View>
-      ) : view === "update" ? (
-        <View style={styles.buttonContainer}>
-          <ButtonUI
-            navigation={navigation}
-            taskId={taskId}
-            onPress={updateSpecificTask}
-            title={"Update"}
-          />
-        </View>
-      ) : (
-        <View style={styles.buttonContainer}>
-          <ButtonUI
-            navigation={navigation}
-            onPress={updateTaskList}
-            title={"Create"}
-          />
-        </View>
-      )}
+      <ScrollView>
+        {view === "read" ? (
+          <View style={styles.buttonContainer}>
+            <ButtonUI navigation={navigation} taskId={taskId} title={"Edit"} />
+            <ButtonUI
+              navigation={navigation}
+              taskId={taskId}
+              title={"Delete"}
+              onPress={deleteTask}
+            />
+          </View>
+        ) : view === "update" ? (
+          <View style={styles.buttonContainer}>
+            <ButtonUI
+              navigation={navigation}
+              taskId={taskId}
+              onPress={updateSpecificTask}
+              title={"Update"}
+            />
+          </View>
+        ) : (
+          <View style={styles.buttonContainer}>
+            <ButtonUI
+              navigation={navigation}
+              onPress={updateTaskList}
+              title={"Create"}
+            />
+          </View>
+        )}
+      </ScrollView>
     </View>
   );
 };
@@ -134,23 +144,21 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flex: 0.7,
+    marginTop: 35,
     alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
   },
   errorMessage: {
     color: "red",
     fontWeight: "bold",
-    padding: 14,
-    marginLeft: 14,
+    marginLeft: 28,
+    marginTop: 14,
   },
   inputTitle: {
-    marginTop: 32,
+    marginTop: 28,
     marginLeft: 28,
     fontSize: 18,
     fontWeight: "bold",
-  },
-  readOnlybuttonContainer: {
-    flex: 0.7,
-    flexDirection: "row",
-    justifyContent: "space-evenly",
   },
 });
