@@ -30,14 +30,18 @@ export const TodoView = ({ title, status, id, timeStamp, navigation }) => {
       </TouchableOpacity>
       <Text style={styles.timeStamp}>{timeStamp}</Text>
 
-      <TouchableOpacity
-        style={styles.updateBtn}
-        onPress={() => {
-          navigation.navigate("TodoForm", { taskId: id, view: "update" });
-        }}
-      >
-        <Image style={styles.icon} source={require("../icons/edit.png")} />
-      </TouchableOpacity>
+      {status === "pending" ? (
+        <TouchableOpacity
+          style={styles.updateBtn}
+          onPress={() => {
+            navigation.navigate("TodoForm", { taskId: id, view: "update" });
+          }}
+        >
+          <Image style={styles.icon} source={require("../icons/edit.png")} />
+        </TouchableOpacity>
+      ) : (
+        <></>
+      )}
       <BouncyCheckbox
         style={styles.checkbox}
         onPress={(isChecked) => {

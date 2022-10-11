@@ -8,7 +8,7 @@ export function DataProvider({ children }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [taskList, setTaskList] = useState([]);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const getTitle = (id) => taskList[id].title;
   const getDescription = (id) => taskList[id].description;
@@ -23,7 +23,6 @@ export function DataProvider({ children }) {
   };
 
   const clearAllData = () => {
-    setUserName("");
     setTitle("");
     setDescription("");
     setTaskList([]);
@@ -31,7 +30,7 @@ export function DataProvider({ children }) {
 
   const updateTaskList = () => {
     if (title === "") {
-      Alert.alert("Title field can't be empty");
+      setErrorMessage("The title field can not be empty");
       return false;
     }
 
@@ -51,6 +50,11 @@ export function DataProvider({ children }) {
   };
 
   const updateSpecificTask = (id) => {
+    if (title === "") {
+      setErrorMessage("The title field can not be empty");
+      return false;
+    }
+
     const newTasks = taskList.map((task) => {
       if (task.id === id) {
         task.title = title;
@@ -77,23 +81,11 @@ export function DataProvider({ children }) {
     setTaskList(newTasks);
   };
 
-  const authUser = () => {
-    if (userName === "") {
-      Alert.alert("The Field is Empty");
-      return false;
-    } else if (userName.length > 7) {
-      Alert.alert("Max length allowed: 7");
-      return false;
-    }
-    return true;
-  };
-
   return (
     <DataContext.Provider
       value={{
         userName,
         setUserName,
-        authUser,
         setTitle,
         setDescription,
         updateTaskList,
@@ -105,8 +97,8 @@ export function DataProvider({ children }) {
         title,
         description,
         updateSpecificTask,
-        setIsLoggedIn,
-        isLoggedIn,
+        errorMessage,
+        setErrorMessage,
       }}
     >
       {children}

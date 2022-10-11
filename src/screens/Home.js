@@ -11,13 +11,28 @@ import { useContext, useEffect, useState } from "react";
 import { StackActions } from "@react-navigation/native";
 
 export const Home = ({ navigation }) => {
-  const { userName, setUserName, authUser } = useContext(DataContext);
+  const { userName, setUserName, errorMessage, setErrorMessage } =
+    useContext(DataContext);
   const [isMaxLength, setIsMaxLength] = useState(false);
 
   useEffect(() => {
-    if (userName.length > 7) setIsMaxLength(true);
-    else setIsMaxLength(false);
+    if (userName.length > 7) {
+      setIsMaxLength(true);
+      setErrorMessage("Maximum characters allowed : 7");
+    } else {
+      setIsMaxLength(false);
+      setErrorMessage("");
+    }
   }, [userName]);
+
+  const isValidUserName = () => {
+    const isLengthNull = userName.length === 0;
+
+    if (!isLengthNull && !isMaxLength) return true;
+
+    if (isLengthNull) setErrorMessage("The User name can not be empty");
+    return false;
+  };
 
   return (
     <View style={styles.container}>
@@ -32,21 +47,15 @@ export const Home = ({ navigation }) => {
             onChangeText={setUserName}
             value={userName}
           />
-          {isMaxLength ? (
-            <Text style={styles.errorMessage}>
-              Maximum characters allowed : 7
-            </Text>
-          ) : (
-            <></>
-          )}
+          <Text style={styles.errorMessage}>{errorMessage}</Text>
         </View>
         <View style={styles.loginButton}>
           <Button
             color={"purple"}
             title="Next"
             onPress={() => {
-              if (authUser()) {
-                navigation.dispatch(StackActions.replace("DashBoard", {}));
+              if (isValidUserName()) {
+                navigation.dispatch(StackActions.replace("DashBoard"));
               }
             }}
           />
@@ -73,7 +82,7 @@ const styles = StyleSheet.create({
   loginTextContainer: {
     flex: 0.2,
     marginTop: 21,
-    marginBottom: 21,
+    marginBottom: 7,
   },
   loginInput: {
     marginTop: 35,
@@ -83,7 +92,6 @@ const styles = StyleSheet.create({
     padding: 7,
   },
   loginButton: {
-    marginTop: 14,
     paddingLeft: 49,
     paddingRight: 49,
   },

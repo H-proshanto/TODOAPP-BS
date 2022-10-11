@@ -1,5 +1,5 @@
 import DataContext from "../context/DataContext";
-import { StyleSheet, View, TextInput, ScrollView } from "react-native";
+import { StyleSheet, View, TextInput, ScrollView, Text } from "react-native";
 import { useContext, useEffect } from "react";
 import { ButtonUI } from "../components/Button";
 import { HeaderUI } from "../components/Header";
@@ -14,6 +14,8 @@ export const TodoForm = ({ navigation, route }) => {
     getDescription,
     updateTaskList,
     updateSpecificTask,
+    errorMessage,
+    setErrorMessage,
   } = useContext(DataContext);
   const taskId = route.params?.taskId;
   const view = route.params?.view;
@@ -27,6 +29,10 @@ export const TodoForm = ({ navigation, route }) => {
       setDescription("");
     }
   }, []);
+
+  useEffect(() => {
+    if (!title.length !== 0) setErrorMessage("");
+  }, [title]);
 
   return (
     <View style={styles.container}>
@@ -51,6 +57,7 @@ export const TodoForm = ({ navigation, route }) => {
             value={description}
           />
         </View>
+        <Text style={styles.errorMessage}>{errorMessage}</Text>
       </ScrollView>
       {view === "read" ? (
         ""
@@ -123,5 +130,11 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flex: 0.7,
     alignItems: "center",
+  },
+  errorMessage: {
+    color: "red",
+    fontWeight: "bold",
+    padding: 14,
+    marginLeft: 14,
   },
 });

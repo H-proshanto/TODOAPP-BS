@@ -1,6 +1,5 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { StackActions } from "@react-navigation/native";
 
 export const ButtonUI = ({ navigation, title, onPress, taskId }) => {
   return (
@@ -56,12 +55,12 @@ const styles = StyleSheet.create({
   },
   dashboardButton: {
     backgroundColor: "white",
-    width: 60,
+    width: 100,
   },
   dashboardText: {
     color: "black",
-    fontSize: 14,
-    textAlign: "center",
+    fontSize: 21,
+    textAlign: "right",
     textDecorationLine: "underline",
   },
   text: {
@@ -73,18 +72,20 @@ const styles = StyleSheet.create({
   },
   logoutBody: {
     alignItems: "center",
-    marginTop: 21,
+    marginTop: 24,
     marginLeft: 7,
   },
   logoutButton: {
+    borderRadius: 14,
     backgroundColor: "#03396c",
-    padding: 7,
-    width: 60,
+    padding: 4,
+    width: 42,
   },
   logoutText: {
     color: "white",
-    fontSize: 14,
+    fontSize: 12,
     textAlign: "center",
+    alignSelf: "center",
     textDecorationLine: "underline",
   },
 });
