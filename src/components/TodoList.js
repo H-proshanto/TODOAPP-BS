@@ -1,10 +1,10 @@
-import DataContext from "../context/DataContext";
+import HooksContext from "../context/HooksContext";
 import { useContext } from "react";
 import { View, StyleSheet, FlatList } from "react-native";
 import { TodoView } from "./TodoView";
 
 export const TodoList = ({ navigation }) => {
-  const { taskList } = useContext(DataContext);
+  const { taskList } = useContext(HooksContext);
 
   const renderItem = ({ item }) => (
     <TodoView

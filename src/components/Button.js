@@ -1,11 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 export const ButtonUI = ({ navigation, title, onPress, taskId }) => {
+  const [isPressed, setIsPressed] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsPressed(false);
+    }, 100);
+  });
+
   return (
     <View style={title === "logout" ? styles.logoutBody : styles.body}>
       <TouchableOpacity
+        disabled={isPressed}
         onPress={() => {
+          setIsPressed(true);
           if (title === "Create" && onPress()) navigation.pop();
           else if (title === "Update" && onPress(taskId)) navigation.pop();
           else if (title === "Create New") navigation.navigate("TodoForm");

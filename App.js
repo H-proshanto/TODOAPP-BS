@@ -1,6 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { DataProvider } from "./src/context/DataContext";
+import { HooksProvider } from "./src/context/HooksContext";
 import { Home } from "./src/screens/Home";
 import { DashBoard } from "./src/screens/DashBoard";
 import { TodoForm } from "./src/screens/TodoForm";
@@ -9,7 +9,7 @@ const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <DataProvider>
+    <HooksProvider>
       <NavigationContainer>
         <Stack.Navigator
           initialRouteName="Home"
@@ -27,6 +27,6 @@ export default function App() {
           <Stack.Screen name="TodoForm" component={TodoForm} />
         </Stack.Navigator>
       </NavigationContainer>
-    </DataProvider>
+    </HooksProvider>
   );
 }

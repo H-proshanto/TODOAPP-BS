@@ -1,9 +1,9 @@
 import { createContext, useState } from "react";
 import { Alert, Keyboard } from "react-native";
 
-const DataContext = createContext();
+const HooksContext = createContext();
 
-export function DataProvider({ children }) {
+export function HooksProvider({ children }) {
   const [key, setKey] = useState(0);
   const [userName, setUserName] = useState("");
   const [sessionName, setSessionName] = useState("");
@@ -13,12 +13,12 @@ export function DataProvider({ children }) {
   const [errorMessage, setErrorMessage] = useState("");
 
   const getTitle = (id) => {
-    const [title] = taskList.filter((task) => task.id === id);
+    const [{ title }] = taskList.filter((task) => task.id === id);
     return title;
   };
 
   const getDescription = (id) => {
-    const [description] = taskList.filter((task) => task.id === id);
+    const [{ description }] = taskList.filter((task) => task.id === id);
     return description;
   };
 
@@ -108,7 +108,7 @@ export function DataProvider({ children }) {
   };
 
   return (
-    <DataContext.Provider
+    <HooksContext.Provider
       value={{
         userName,
         setUserName,
@@ -131,8 +131,8 @@ export function DataProvider({ children }) {
       }}
     >
       {children}
-    </DataContext.Provider>
+    </HooksContext.Provider>
   );
 }
 
-export default DataContext;
+export default HooksContext;

@@ -1,10 +1,10 @@
-import DataContext from "../context/DataContext";
+import HooksContext from "../context/HooksContext";
 import { StyleSheet, Text, View } from "react-native";
 import { ButtonUI } from "./Button";
 import { useContext } from "react";
 
 export const HeaderUI = ({ navigation }) => {
-  const { sessionName, clearAllData } = useContext(DataContext);
+  const { sessionName, clearAllData } = useContext(HooksContext);
 
   return (
     <View style={styles.headerContainer}>

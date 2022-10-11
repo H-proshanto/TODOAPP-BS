@@ -1,4 +1,4 @@
-import DataContext from "../context/DataContext";
+import HooksContext from "../context/HooksContext";
 import {
   StyleSheet,
   Text,
@@ -11,14 +11,15 @@ import { useContext, useEffect, useState } from "react";
 import { StackActions } from "@react-navigation/native";
 
 export const Home = ({ navigation }) => {
+  const [isPressed, setIsPressed] = useState(false);
+  const [isMaxLength, setIsMaxLength] = useState(false);
   const {
     userName,
-    setUserName,
     errorMessage,
+    setUserName,
     setErrorMessage,
     setSessionName,
-  } = useContext(DataContext);
-  const [isMaxLength, setIsMaxLength] = useState(false);
+  } = useContext(HooksContext);
 
   useEffect(() => {
     if (userName.length > 5) {
@@ -29,6 +30,12 @@ export const Home = ({ navigation }) => {
       setErrorMessage("");
     }
   }, [userName]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsPressed(false);
+    }, 100);
+  });
 
   const isValidUserName = () => {
     const isLengthNull = userName.length === 0;
@@ -57,8 +64,10 @@ export const Home = ({ navigation }) => {
         <View style={styles.loginButton}>
           <Button
             color={"purple"}
+            disabled={isPressed}
             title="Next"
             onPress={() => {
+              setIsPressed(true);
               if (isValidUserName()) {
                 setSessionName(userName);
                 navigation.dispatch(StackActions.replace("DashBoard"));

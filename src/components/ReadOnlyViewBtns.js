@@ -1,11 +1,11 @@
 import { useContext } from "react";
 import { StyleSheet, View } from "react-native";
 import { ButtonUI } from "../components/Button";
-import DataContext from "../context/DataContext";
+import HooksContext from "../context/HooksContext";
 
 export const ReadOnlyViewBtns = ({ navigation, view, status, taskId }) => {
   const { deleteTask, updateTaskList, updateSpecificTask } =
-    useContext(DataContext);
+    useContext(HooksContext);
 
   return (
     <>
