@@ -16,6 +16,8 @@ export const ButtonUI = ({ navigation, title, onPress, taskId }) => {
               routes: [{ name: "Home" }],
             });
             onPress();
+          } else if (title === "Edit") {
+            navigation.navigate("TodoForm", { taskId, view: "update" });
           }
         }}
       >

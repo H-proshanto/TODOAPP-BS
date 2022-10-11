@@ -1,5 +1,5 @@
 import DataContext from "../context/DataContext";
-import { StyleSheet, View, TextInput, ScrollView } from "react-native";
+import { StyleSheet, View, TextInput, ScrollView, Text } from "react-native";
 import { useContext, useEffect } from "react";
 import { ButtonUI } from "../components/Button";
 import { HeaderUI } from "../components/Header";
@@ -33,6 +33,7 @@ export const TodoForm = ({ navigation, route }) => {
       <ScrollView>
         <HeaderUI navigation={navigation} />
         <View style={styles.titleContainer}>
+          <Text style={styles.inputTitle}>Title</Text>
           <TextInput
             style={styles.titleInput}
             placeholder="Enter Title Here"
@@ -42,6 +43,7 @@ export const TodoForm = ({ navigation, route }) => {
           />
         </View>
         <View>
+          <Text style={styles.inputTitle}>Description</Text>
           <TextInput
             style={styles.descriptionText}
             placeholder={view === "read" ? "" : "Enter Description Here"}
@@ -53,7 +55,10 @@ export const TodoForm = ({ navigation, route }) => {
         </View>
       </ScrollView>
       {view === "read" ? (
-        ""
+        <View style={styles.readOnlybuttonContainer}>
+          <ButtonUI navigation={navigation} taskId={taskId} title={"Edit"} />
+          <ButtonUI navigation={navigation} taskId={taskId} title={"Delete"} />
+        </View>
       ) : view === "update" ? (
         <View style={styles.buttonContainer}>
           <ButtonUI
@@ -107,14 +112,14 @@ const styles = StyleSheet.create({
     flex: 0.2,
   },
   titleInput: {
-    marginTop: 35,
+    marginTop: 14,
     marginLeft: 28,
     marginRight: 28,
     borderWidth: 2,
     padding: 7,
   },
   descriptionText: {
-    marginTop: 35,
+    marginTop: 14,
     marginLeft: 28,
     marginRight: 28,
     borderWidth: 2,
@@ -123,5 +128,16 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flex: 0.7,
     alignItems: "center",
+  },
+  inputTitle: {
+    marginTop: 32,
+    marginLeft: 28,
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  readOnlybuttonContainer: {
+    flex: 0.7,
+    flexDirection: "row",
+    justifyContent: "space-evenly",
   },
 });
