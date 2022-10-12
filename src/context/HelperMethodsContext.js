@@ -1,5 +1,5 @@
 import HooksContext from "./HooksContext";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext } from "react";
 import { Alert, Keyboard } from "react-native";
 
 const HelperMethodsContext = createContext();

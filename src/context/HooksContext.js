@@ -1,5 +1,4 @@
 import { createContext, useState } from "react";
-import { Alert, Keyboard } from "react-native";
 
 const HooksContext = createContext();
 

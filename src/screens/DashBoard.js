@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 import { HeaderUI } from "../components/Header.js";
-import { ButtonUI } from "../components/Button.js";
+import { ButtonUI } from "../components/ButtonUI.js";
 import { TodoList } from "../components/TodoList";
 
 export const DashBoard = ({ navigation }) => {

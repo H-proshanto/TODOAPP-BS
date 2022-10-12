@@ -1,7 +1,7 @@
 import HelperMethodsContext from "../context/HelperMethodsContext";
 import { useContext } from "react";
 import { StyleSheet, View } from "react-native";
-import { ButtonUI } from "../components/Button";
+import { ButtonUI } from "../components/ButtonUI";
 
 export const ReadOnlyViewBtns = ({ navigation, view, status, taskId }) => {
   const { deleteTask, updateTaskList, updateSpecificTask } =

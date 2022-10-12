@@ -1,18 +1,9 @@
 import HooksContext from "../context/HooksContext";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  Button,
-  ScrollView,
-} from "react-native";
+import { StyleSheet, Text, View, TextInput, ScrollView } from "react-native";
 import { useContext, useEffect, useState } from "react";
-import { StackActions } from "@react-navigation/native";
-import { ButtonUI } from "../components/Button";
+import { ButtonUI } from "../components/ButtonUI";
 
 export const Home = ({ navigation }) => {
-  const [isPressed, setIsPressed] = useState(false);
   const [isMaxLength, setIsMaxLength] = useState(false);
   const {
     userName,
@@ -31,12 +22,6 @@ export const Home = ({ navigation }) => {
       setErrorMessage("");
     }
   }, [userName]);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setIsPressed(false);
-    }, 100);
-  });
 
   const isValidUserName = () => {
     const isLengthNull = userName.length === 0;
@@ -100,10 +85,6 @@ const styles = StyleSheet.create({
     marginRight: 28,
     borderWidth: 2,
     padding: 7,
-  },
-  loginButton: {
-    paddingLeft: 49,
-    paddingRight: 49,
   },
   errorMessage: {
     color: "red",
