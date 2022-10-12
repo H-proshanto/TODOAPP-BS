@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { useContext, useEffect, useState } from "react";
 import { StackActions } from "@react-navigation/native";
+import { ButtonUI } from "../components/Button";
 
 export const Home = ({ navigation }) => {
   const [isPressed, setIsPressed] = useState(false);
@@ -40,7 +41,10 @@ export const Home = ({ navigation }) => {
   const isValidUserName = () => {
     const isLengthNull = userName.length === 0;
 
-    if (!isLengthNull && !isMaxLength) return true;
+    if (!isLengthNull && !isMaxLength) {
+      setSessionName(userName);
+      return true;
+    }
 
     if (isLengthNull) setErrorMessage("The User name can not be empty");
     return false;
@@ -61,20 +65,11 @@ export const Home = ({ navigation }) => {
           />
           <Text style={styles.errorMessage}>{errorMessage}</Text>
         </View>
-        <View style={styles.loginButton}>
-          <Button
-            color={"purple"}
-            disabled={isPressed}
-            title="Next"
-            onPress={() => {
-              setIsPressed(true);
-              if (isValidUserName()) {
-                setSessionName(userName);
-                navigation.dispatch(StackActions.replace("DashBoard"));
-              }
-            }}
-          />
-        </View>
+        <ButtonUI
+          navigation={navigation}
+          title="Next"
+          onPress={isValidUserName}
+        />
       </ScrollView>
     </View>
   );

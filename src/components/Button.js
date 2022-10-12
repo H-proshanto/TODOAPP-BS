@@ -11,7 +11,15 @@ export const ButtonUI = ({ navigation, title, onPress, taskId }) => {
   });
 
   return (
-    <View style={title === "logout" ? styles.logoutBody : styles.body}>
+    <View
+      style={
+        title === "logout"
+          ? styles.logoutBody
+          : title === "Next"
+          ? styles.loginContainer
+          : styles.body
+      }
+    >
       <TouchableOpacity
         disabled={isPressed}
         onPress={() => {
@@ -29,6 +37,11 @@ export const ButtonUI = ({ navigation, title, onPress, taskId }) => {
             navigation.navigate("TodoForm", { taskId, view: "update" });
           } else if (title === "Delete") {
             onPress(taskId, navigation);
+          } else if (title === "Next" && onPress()) {
+            navigation.reset({
+              index: 0,
+              routes: [{ name: "DashBoard" }],
+            });
           }
         }}
       >
@@ -38,6 +51,8 @@ export const ButtonUI = ({ navigation, title, onPress, taskId }) => {
               ? styles.dashboardButton
               : title === "logout"
               ? styles.logoutButton
+              : title === "Next"
+              ? styles.loginButton
               : styles.createButton
           }
         >
@@ -47,6 +62,8 @@ export const ButtonUI = ({ navigation, title, onPress, taskId }) => {
                 ? styles.dashboardText
                 : title == "logout"
                 ? styles.logoutText
+                : title == "Next"
+                ? styles.loginText
                 : styles.text
             }
           >
@@ -102,5 +119,20 @@ const styles = StyleSheet.create({
     textAlign: "center",
     alignSelf: "center",
     textDecorationLine: "underline",
+  },
+  loginContainer: {
+    alignItems: "center",
+  },
+  loginButton: {
+    backgroundColor: "purple",
+    paddingLeft: 100,
+    paddingRight: 100,
+  },
+  loginText: {
+    color: "white",
+    fontSize: 18,
+    padding: 5,
+    textAlign: "center",
+    alignSelf: "center",
   },
 });
