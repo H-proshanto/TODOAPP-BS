@@ -1,5 +1,5 @@
 import { StyleSheet, View, ScrollView } from "react-native";
-import { HeaderUI } from "../components/Header";
+import { HeaderUI } from "../components/HeaderUI";
 import { ReadOnlyViewBtns } from "../components/ReadOnlyViewBtns";
 import { Title } from "../components/Title";
 import { Description } from "../components/Description";
