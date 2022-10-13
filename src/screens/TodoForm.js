@@ -1,20 +1,47 @@
-import { StyleSheet, View, ScrollView } from "react-native";
-import { HeaderUI } from "../components/HeaderUI";
-import { ReadOnlyViewBtns } from "../components/ReadOnlyViewBtns";
-import { Title } from "../components/Title";
-import { Description } from "../components/Description";
+import HelperMethodsContext from '../context/HelperMethodsContext';
+import HooksContext from '../context/HooksContext';
+import { StyleSheet, View, ScrollView, Text } from 'react-native';
+import { InputField } from '../components/InputField';
+import { HeaderUI } from '../components/HeaderUI';
+import { ReadOnlyViewBtns } from '../components/ReadOnlyViewBtns';
+import { useState, useEffect, useContext } from 'react';
 
 export const TodoForm = ({ navigation, route }) => {
   const taskId = route.params?.taskId;
   const view = route.params?.view;
   const status = route.params?.status;
+  const { errorMessage, setErrorMessage } = useContext(HooksContext);
+  const { getTodo } = useContext(HelperMethodsContext);
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+
+  useEffect(() => {
+    if (view === 'read' || view === 'update') {
+      const { title, description } = getTodo(taskId);
+      setTitle(title);
+      setDescription(description);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!title.length !== 0) setErrorMessage('');
+  }, [title]);
 
   return (
     <View style={styles.container}>
       <ScrollView>
-        <HeaderUI navigation={navigation} />
-        <Title view={view} taskId={taskId} />
-        <Description view={view} taskId={taskId} />
+        <InputField view={view} text={title} setter={setTitle} placeholder="Title" />
+        {errorMessage !== '' ? (
+          <Text style={styles.errorMessage}>{errorMessage}</Text>
+        ) : (
+          <></>
+        )}
+        <InputField
+          view={view}
+          text={description}
+          setter={setDescription}
+          placeholder="Description"
+        />
       </ScrollView>
       <ScrollView>
         <ReadOnlyViewBtns
@@ -22,6 +49,8 @@ export const TodoForm = ({ navigation, route }) => {
           status={status}
           navigation={navigation}
           taskId={taskId}
+          title={title}
+          description={description}
         />
       </ScrollView>
     </View>
@@ -31,6 +60,12 @@ export const TodoForm = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
+  },
+  errorMessage: {
+    color: 'red',
+    fontWeight: 'bold',
+    marginLeft: 28,
+    marginTop: 14,
   },
 });

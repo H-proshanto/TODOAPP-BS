@@ -5,27 +5,12 @@ import { Alert, Keyboard } from "react-native";
 const HelperMethodsContext = createContext();
 
 export function HelperMethodsProvider({ children }) {
-  const {
-    key,
-    title,
-    description,
-    taskList,
-    setKey,
-    setUserName,
-    setTitle,
-    setDescription,
-    setTaskList,
-    setErrorMessage,
-  } = useContext(HooksContext);
+  const { key, taskList, setKey, setUserName, setTaskList, setErrorMessage } =
+    useContext(HooksContext);
 
-  const getTitle = (id) => {
-    const [{ title }] = taskList.filter((task) => task.id === id);
-    return title;
-  };
-
-  const getDescription = (id) => {
-    const [{ description }] = taskList.filter((task) => task.id === id);
-    return description;
+  const getTodo = (id) => {
+    const [todo] = taskList.filter((task) => task.id === id);
+    return todo;
   };
 
   const getTime = () => {
@@ -39,12 +24,10 @@ export function HelperMethodsProvider({ children }) {
 
   const clearAllData = () => {
     setUserName("");
-    setTitle("");
-    setDescription("");
     setTaskList([]);
   };
 
-  const updateTaskList = () => {
+  const updateTaskList = (title, description) => {
     if (title === "") {
       setErrorMessage("The title field can not be empty");
       return false;
@@ -66,7 +49,7 @@ export function HelperMethodsProvider({ children }) {
     return true;
   };
 
-  const updateSpecificTask = (id) => {
+  const updateSpecificTask = (id, title, description) => {
     if (title === "") {
       setErrorMessage("The title field can not be empty");
       return false;
@@ -116,8 +99,7 @@ export function HelperMethodsProvider({ children }) {
   return (
     <HelperMethodsContext.Provider
       value={{
-        getTitle,
-        getDescription,
+        getTodo,
         clearAllData,
         updateTaskList,
         updateSpecificTask,
