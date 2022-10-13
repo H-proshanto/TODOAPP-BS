@@ -1,10 +1,18 @@
 import HelperMethodsContext from '../contexts/HelperMethodsContext';
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { ButtonUI } from '../components/ButtonUI';
 
-export const ReadOnlyViewBtns = ({ navigation, view, status, taskId, title, description }) => {
-  const { deleteTask, updateTaskList, updateSpecificTask } = useContext(HelperMethodsContext);
+export const ReadOnlyViewBtns = ({
+  navigation,
+  view,
+  status,
+  taskId,
+  title,
+  description,
+}) => {
+  const { deleteTask, updateTaskList, updateSpecificTask } =
+    useContext(HelperMethodsContext);
 
   return (
     <>
@@ -13,7 +21,9 @@ export const ReadOnlyViewBtns = ({ navigation, view, status, taskId, title, desc
           {status === 'pending' ? (
             <ButtonUI
               title={'Edit'}
-              onPress={() => navigation.navigate('TodoForm', { taskId, view: 'update' })}
+              onPress={() =>
+                navigation.navigate('TodoForm', { taskId, view: 'update' })
+              }
             />
           ) : (
             <></>
@@ -30,7 +40,9 @@ export const ReadOnlyViewBtns = ({ navigation, view, status, taskId, title, desc
           <ButtonUI
             title={'Update'}
             onPress={() => {
-              if (updateSpecificTask(taskId, title, description)) navigation.pop();
+              if (updateSpecificTask(taskId, title, description)) {
+                navigation.pop();
+              }
             }}
           />
         </View>
@@ -39,7 +51,9 @@ export const ReadOnlyViewBtns = ({ navigation, view, status, taskId, title, desc
           <ButtonUI
             title={'Create'}
             onPress={() => {
-              if (updateTaskList(title, description)) navigation.pop();
+              if (updateTaskList(title, description)) {
+                navigation.pop();
+              }
             }}
           />
         </View>

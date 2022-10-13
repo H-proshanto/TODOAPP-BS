@@ -1,11 +1,12 @@
 import HooksContext from './HooksContext';
-import { createContext, useContext } from 'react';
+import React, { createContext, useContext } from 'react';
 import { Alert, Keyboard } from 'react-native';
 
 const HelperMethodsContext = createContext();
 
 export function HelperMethodsProvider({ children }) {
-  const { key, taskList, setKey, setUserName, setTaskList, setErrorMessage } =
+  let key = 0;
+  const { taskList, setUserName, setTaskList, setErrorMessage } =
     useContext(HooksContext);
 
   const getTodo = id => taskList.get(id);
@@ -39,7 +40,7 @@ export function HelperMethodsProvider({ children }) {
         timeStamp: getTime(),
       })
     );
-    setKey(key + 1);
+    key++;
     Keyboard.dismiss();
 
     return true;
@@ -76,7 +77,10 @@ export function HelperMethodsProvider({ children }) {
 
   const toggleCompletion = id => {
     const task = taskList.get(id);
-    task.status = task.status === 'pending' ? (task.status = 'done') : (task.status = 'pending');
+    task.status =
+      task.status === 'pending'
+        ? (task.status = 'done')
+        : (task.status = 'pending');
     setTaskList(new Map(taskList));
   };
 

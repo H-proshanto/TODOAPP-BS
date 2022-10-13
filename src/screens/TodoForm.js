@@ -1,9 +1,9 @@
 import HelperMethodsContext from '../contexts/HelperMethodsContext';
 import HooksContext from '../contexts/HooksContext';
+import React, { useState, useEffect, useContext } from 'react';
 import { StyleSheet, View, ScrollView, Text } from 'react-native';
 import { InputField } from '../components/InputField';
 import { ReadOnlyViewBtns } from '../components/ReadOnlyViewBtns';
-import { useState, useEffect, useContext } from 'react';
 
 export const TodoForm = ({ navigation, route }) => {
   const taskId = route.params?.taskId;
@@ -16,21 +16,32 @@ export const TodoForm = ({ navigation, route }) => {
 
   useEffect(() => {
     if (view === 'read' || view === 'update') {
-      const { title, description } = getTodo(taskId);
-      setTitle(title);
-      setDescription(description);
+      const { currentTitle, currentDescription } = getTodo(taskId);
+      setTitle(currentTitle);
+      setDescription(currentDescription);
     }
   }, []);
 
   useEffect(() => {
-    if (!title.length !== 0) setErrorMessage('');
+    if (!title.length !== 0) {
+      setErrorMessage('');
+    }
   }, [title]);
 
   return (
     <View style={styles.container}>
       <ScrollView>
-        <InputField view={view} text={title} setter={setTitle} placeholder="Title" />
-        {errorMessage !== '' ? <Text style={styles.errorMessage}>{errorMessage}</Text> : <></>}
+        <InputField
+          view={view}
+          text={title}
+          setter={setTitle}
+          placeholder="Title"
+        />
+        {errorMessage !== '' ? (
+          <Text style={styles.errorMessage}>{errorMessage}</Text>
+        ) : (
+          <></>
+        )}
         <InputField
           view={view}
           text={description}

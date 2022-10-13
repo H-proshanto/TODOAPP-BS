@@ -1,6 +1,6 @@
 import HelperMethodsContext from '../contexts/HelperMethodsContext';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 
 export const TodoView = ({ title, status, id, timeStamp, navigation }) => {
@@ -17,12 +17,8 @@ export const TodoView = ({ title, status, id, timeStamp, navigation }) => {
         <Text
           style={
             status === 'done'
-              ? {
-                  textDecorationLine: 'line-through',
-                  textDecorationStyle: 'solid',
-                  textAlign: 'left',
-                }
-              : { textAlign: 'left' }
+              ? styles.completedTaskText
+              : styles.pendingTaskText
           }
         >
           {title}
@@ -86,5 +82,13 @@ const styles = StyleSheet.create({
     color: 'grey',
     fontStyle: 'italic',
     marginRight: 7,
+  },
+  completedTaskText: {
+    textDecorationLine: 'line-through',
+    textDecorationStyle: 'solid',
+    textAlign: 'left',
+  },
+  pendingTaskText: {
+    textAlign: 'left',
   },
 });

@@ -42,9 +42,9 @@ export const ButtonUI = ({ title, onPress }) => {
             style={
               title === 'Create New'
                 ? styles.dashboardText
-                : title == 'logout'
+                : title === 'logout'
                 ? styles.logoutText
-                : title == 'Next'
+                : title === 'Next'
                 ? styles.loginText
                 : styles.text
             }

@@ -1,8 +1,8 @@
 import HooksContext from '../contexts/HooksContext';
 import HelperMethodsContext from '../contexts/HelperMethodsContext';
+import React, { useContext } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { ButtonUI } from './ButtonUI';
-import { useContext } from 'react';
 
 export const HeaderUI = ({ navigation }) => {
   const { sessionName } = useContext(HooksContext);

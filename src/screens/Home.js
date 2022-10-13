@@ -1,12 +1,17 @@
 import HooksContext from '../contexts/HooksContext';
+import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, Text, View, TextInput, ScrollView } from 'react-native';
-import { useContext, useEffect, useState } from 'react';
 import { ButtonUI } from '../components/ButtonUI';
 
 export const Home = ({ navigation }) => {
   const [isMaxLength, setIsMaxLength] = useState(false);
-  const { userName, errorMessage, setUserName, setErrorMessage, setSessionName } =
-    useContext(HooksContext);
+  const {
+    userName,
+    errorMessage,
+    setUserName,
+    setErrorMessage,
+    setSessionName,
+  } = useContext(HooksContext);
 
   useEffect(() => {
     if (userName.length > 5) {
@@ -26,7 +31,9 @@ export const Home = ({ navigation }) => {
       return true;
     }
 
-    if (isLengthNull) setErrorMessage('The User name can not be empty');
+    if (isLengthNull) {
+      setErrorMessage('The User name can not be empty');
+    }
     return false;
   };
 
@@ -43,7 +50,11 @@ export const Home = ({ navigation }) => {
             onChangeText={setUserName}
             value={userName}
           />
-          {errorMessage !== '' ? <Text style={styles.errorMessage}>{errorMessage}</Text> : <></>}
+          {errorMessage !== '' ? (
+            <Text style={styles.errorMessage}>{errorMessage}</Text>
+          ) : (
+            <></>
+          )}
         </View>
         <ButtonUI
           navigation={navigation}
