@@ -1,7 +1,7 @@
-import HooksContext from "../context/HooksContext";
-import { useContext } from "react";
-import { View, StyleSheet, FlatList } from "react-native";
-import { TodoView } from "./TodoView";
+import HooksContext from '../context/HooksContext';
+import { useContext } from 'react';
+import { View, StyleSheet, FlatList } from 'react-native';
+import { TodoView } from './TodoView';
 
 export const TodoList = ({ navigation }) => {
   const { taskList } = useContext(HooksContext);
@@ -18,7 +18,7 @@ export const TodoList = ({ navigation }) => {
 
   return (
     <View style={styles.listContainer}>
-      <FlatList data={taskList} renderItem={renderItem} />
+      <FlatList data={Array.from(taskList.values())} renderItem={renderItem} />
     </View>
   );
 };
