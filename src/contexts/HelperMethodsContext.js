@@ -1,11 +1,11 @@
 import HooksContext from './HooksContext';
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { Alert, Keyboard } from 'react-native';
 
 const HelperMethodsContext = createContext();
 
 export function HelperMethodsProvider({ children }) {
-  let key = 0;
+  const [key, setKey] = useState(0);
   const { taskList, setUserName, setTaskList, setErrorMessage } =
     useContext(HooksContext);
 
@@ -31,16 +31,16 @@ export function HelperMethodsProvider({ children }) {
       return false;
     }
 
-    setTaskList(
-      taskList.set(key, {
-        title,
-        description,
-        status: 'pending',
-        id: key,
-        timeStamp: getTime(),
-      })
-    );
-    key++;
+    taskList.set(key, {
+      title,
+      description,
+      status: 'pending',
+      id: key,
+      timeStamp: getTime(),
+    });
+
+    setTaskList(new Map(taskList));
+    setKey(key + 1);
     Keyboard.dismiss();
 
     return true;

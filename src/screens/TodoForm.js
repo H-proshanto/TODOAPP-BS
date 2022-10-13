@@ -16,9 +16,9 @@ export const TodoForm = ({ navigation, route }) => {
 
   useEffect(() => {
     if (view === 'read' || view === 'update') {
-      const { currentTitle, currentDescription } = getTodo(taskId);
-      setTitle(currentTitle);
-      setDescription(currentDescription);
+      const { title, description } = getTodo(taskId);
+      setTitle(title);
+      setDescription(description);
     }
   }, []);
 
