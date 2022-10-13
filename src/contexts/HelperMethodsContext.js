@@ -76,8 +76,7 @@ export function HelperMethodsProvider({ children }) {
 
   const toggleCompletion = id => {
     const task = taskList.get(id);
-    task.status =
-      task.status === 'pending' ? (task.status = 'done') : (task.status = 'pending');
+    task.status = task.status === 'pending' ? (task.status = 'done') : (task.status = 'pending');
     setTaskList(new Map(taskList));
   };
 

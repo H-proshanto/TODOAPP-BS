@@ -11,7 +11,17 @@ export const HeaderUI = ({ navigation }) => {
   return (
     <View style={styles.userInfo}>
       <Text style={styles.username}>{`Mr.${sessionName}`}</Text>
-      <ButtonUI navigation={navigation} title={'logout'} onPress={clearAllData} />
+      <ButtonUI
+        navigation={navigation}
+        title={'logout'}
+        onPress={() => {
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'Home' }],
+          });
+          clearAllData();
+        }}
+      />
     </View>
   );
 };

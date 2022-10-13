@@ -8,7 +8,11 @@ export const DashBoard = ({ navigation }) => {
       <View style={styles.dashboard}>
         <Text style={styles.dashboardText}>My ToDos</Text>
         <View style={styles.CreateTodoFormButton}>
-          <ButtonUI navigation={navigation} title={'Create New'} />
+          <ButtonUI
+            navigation={navigation}
+            title={'Create New'}
+            onPress={() => navigation.navigate('TodoForm')}
+          />
         </View>
       </View>
       <>

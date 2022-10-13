@@ -3,48 +3,44 @@ import { useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { ButtonUI } from '../components/ButtonUI';
 
-export const ReadOnlyViewBtns = ({
-  navigation,
-  view,
-  status,
-  taskId,
-  title,
-  description,
-}) => {
-  const { deleteTask, updateTaskList, updateSpecificTask } =
-    useContext(HelperMethodsContext);
+export const ReadOnlyViewBtns = ({ navigation, view, status, taskId, title, description }) => {
+  const { deleteTask, updateTaskList, updateSpecificTask } = useContext(HelperMethodsContext);
 
   return (
     <>
       {view === 'read' ? (
         <View style={styles.buttonContainer}>
           {status === 'pending' ? (
-            <ButtonUI navigation={navigation} taskId={taskId} title={'Edit'} />
+            <ButtonUI
+              title={'Edit'}
+              onPress={() => navigation.navigate('TodoForm', { taskId, view: 'update' })}
+            />
           ) : (
             <></>
           )}
           <ButtonUI
-            navigation={navigation}
-            taskId={taskId}
             title={'Delete'}
-            onPress={deleteTask}
+            onPress={() => {
+              deleteTask(taskId, navigation);
+            }}
           />
         </View>
       ) : view === 'update' ? (
         <View style={styles.buttonContainer}>
           <ButtonUI
-            navigation={navigation}
-            taskId={taskId}
-            onPress={() => updateSpecificTask(taskId, title, description)}
             title={'Update'}
+            onPress={() => {
+              if (updateSpecificTask(taskId, title, description)) navigation.pop();
+            }}
           />
         </View>
       ) : (
         <View style={styles.buttonContainer}>
           <ButtonUI
-            navigation={navigation}
-            onPress={() => updateTaskList(title, description)}
             title={'Create'}
+            onPress={() => {
+              if (updateTaskList(title, description)) navigation.pop();
+            }}
           />
         </View>
       )}

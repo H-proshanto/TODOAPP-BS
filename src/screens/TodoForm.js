@@ -30,11 +30,7 @@ export const TodoForm = ({ navigation, route }) => {
     <View style={styles.container}>
       <ScrollView>
         <InputField view={view} text={title} setter={setTitle} placeholder="Title" />
-        {errorMessage !== '' ? (
-          <Text style={styles.errorMessage}>{errorMessage}</Text>
-        ) : (
-          <></>
-        )}
+        {errorMessage !== '' ? <Text style={styles.errorMessage}>{errorMessage}</Text> : <></>}
         <InputField
           view={view}
           text={description}

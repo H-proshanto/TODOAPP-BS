@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-export const ButtonUI = ({ navigation, title, onPress, taskId }) => {
+export const ButtonUI = ({ title, onPress }) => {
   const [isPressed, setIsPressed] = useState(false);
 
   useEffect(() => {
@@ -24,25 +24,7 @@ export const ButtonUI = ({ navigation, title, onPress, taskId }) => {
         disabled={isPressed}
         onPress={() => {
           setIsPressed(true);
-          if (title === 'Create' && onPress()) navigation.pop();
-          else if (title === 'Update' && onPress(taskId)) navigation.pop();
-          else if (title === 'Create New') navigation.navigate('TodoForm');
-          else if (title === 'logout') {
-            navigation.reset({
-              index: 0,
-              routes: [{ name: 'Home' }],
-            });
-            onPress();
-          } else if (title === 'Edit') {
-            navigation.navigate('TodoForm', { taskId, view: 'update' });
-          } else if (title === 'Delete') {
-            onPress(taskId, navigation);
-          } else if (title === 'Next' && onPress()) {
-            navigation.reset({
-              index: 0,
-              routes: [{ name: 'DashBoard' }],
-            });
-          }
+          onPress();
         }}
       >
         <View

@@ -43,13 +43,20 @@ export const Home = ({ navigation }) => {
             onChangeText={setUserName}
             value={userName}
           />
-          {errorMessage !== '' ? (
-            <Text style={styles.errorMessage}>{errorMessage}</Text>
-          ) : (
-            <></>
-          )}
+          {errorMessage !== '' ? <Text style={styles.errorMessage}>{errorMessage}</Text> : <></>}
         </View>
-        <ButtonUI navigation={navigation} title="Next" onPress={isValidUserName} />
+        <ButtonUI
+          navigation={navigation}
+          title="Next"
+          onPress={() => {
+            if (isValidUserName()) {
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'DashBoard' }],
+              });
+            }
+          }}
+        />
       </ScrollView>
     </View>
   );

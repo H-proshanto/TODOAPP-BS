@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { HooksProvider } from './src/context/HooksContext';
-import { HelperMethodsProvider } from './src/context/HelperMethodsContext';
+import { HooksProvider } from './src/contexts/HooksContext';
+import { HelperMethodsProvider } from './src/contexts/HelperMethodsContext';
 import { Home } from './src/screens/Home';
 import { DashBoard } from './src/screens/DashBoard';
 import { TodoForm } from './src/screens/TodoForm';
