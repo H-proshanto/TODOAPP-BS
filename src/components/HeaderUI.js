@@ -1,5 +1,5 @@
-import HooksContext from '../context/HooksContext';
-import HelperMethodsContext from '../context/HelperMethodsContext';
+import HooksContext from '../contexts/HooksContext';
+import HelperMethodsContext from '../contexts/HelperMethodsContext';
 import { StyleSheet, Text, View } from 'react-native';
 import { ButtonUI } from './ButtonUI';
 import { useContext } from 'react';

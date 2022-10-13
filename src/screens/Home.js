@@ -1,4 +1,4 @@
-import HooksContext from '../context/HooksContext';
+import HooksContext from '../contexts/HooksContext';
 import { StyleSheet, Text, View, TextInput, ScrollView } from 'react-native';
 import { useContext, useEffect, useState } from 'react';
 import { ButtonUI } from '../components/ButtonUI';

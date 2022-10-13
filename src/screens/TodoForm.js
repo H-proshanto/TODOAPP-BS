@@ -1,8 +1,7 @@
-import HelperMethodsContext from '../context/HelperMethodsContext';
-import HooksContext from '../context/HooksContext';
+import HelperMethodsContext from '../contexts/HelperMethodsContext';
+import HooksContext from '../contexts/HooksContext';
 import { StyleSheet, View, ScrollView, Text } from 'react-native';
 import { InputField } from '../components/InputField';
-import { HeaderUI } from '../components/HeaderUI';
 import { ReadOnlyViewBtns } from '../components/ReadOnlyViewBtns';
 import { useState, useEffect, useContext } from 'react';
 

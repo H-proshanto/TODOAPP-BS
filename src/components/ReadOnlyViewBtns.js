@@ -1,4 +1,4 @@
-import HelperMethodsContext from '../context/HelperMethodsContext';
+import HelperMethodsContext from '../contexts/HelperMethodsContext';
 import { useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { ButtonUI } from '../components/ButtonUI';
