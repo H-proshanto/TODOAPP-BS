@@ -1,7 +1,7 @@
-import HelperMethodsContext from "../context/HelperMethodsContext";
-import BouncyCheckbox from "react-native-bouncy-checkbox";
-import { useContext } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import HelperMethodsContext from '../contexts/HelperMethodsContext';
+import BouncyCheckbox from 'react-native-bouncy-checkbox';
+import { useContext } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 
 export const TodoView = ({ title, status, id, timeStamp, navigation }) => {
   const { toggleCompletion } = useContext(HelperMethodsContext);
@@ -11,18 +11,18 @@ export const TodoView = ({ title, status, id, timeStamp, navigation }) => {
       <TouchableOpacity
         style={styles.titleContainer}
         onPress={() => {
-          navigation.navigate("TodoForm", { taskId: id, view: "read", status });
+          navigation.navigate('TodoForm', { taskId: id, view: 'read', status });
         }}
       >
         <Text
           style={
-            status === "done"
+            status === 'done'
               ? {
-                  textDecorationLine: "line-through",
-                  textDecorationStyle: "solid",
-                  textAlign: "left",
+                  textDecorationLine: 'line-through',
+                  textDecorationStyle: 'solid',
+                  textAlign: 'left',
                 }
-              : { textAlign: "left" }
+              : { textAlign: 'left' }
           }
         >
           {title}
@@ -30,22 +30,22 @@ export const TodoView = ({ title, status, id, timeStamp, navigation }) => {
       </TouchableOpacity>
       <Text style={styles.timeStamp}>{timeStamp}</Text>
 
-      {status === "pending" ? (
+      {status === 'pending' ? (
         <TouchableOpacity
           style={styles.updateBtn}
           onPress={() => {
-            navigation.navigate("TodoForm", { taskId: id, view: "update" });
+            navigation.navigate('TodoForm', { taskId: id, view: 'update' });
           }}
         >
-          <Image style={styles.icon} source={require("../icons/edit.png")} />
+          <Image style={styles.icon} source={require('../icons/edit.png')} />
         </TouchableOpacity>
       ) : (
         <></>
       )}
       <BouncyCheckbox
         style={styles.checkbox}
-        isChecked={status === "done" ? true : false}
-        onPress={(isChecked) => {
+        isChecked={status === 'done' ? true : false}
+        onPress={isChecked => {
           isChecked = !isChecked;
           toggleCompletion(id);
         }}
@@ -63,28 +63,28 @@ const styles = StyleSheet.create({
   todoConatainer: {
     margin: 21,
     borderRadius: 15,
-    backgroundColor: "#eeeeee",
+    backgroundColor: '#eeeeee',
     padding: 15,
-    flexDirection: "row",
-    justifyContent: "space-evenly",
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
   },
   checkbox: {
-    alignSelf: "center",
-    justifyContent: "flex-end",
+    alignSelf: 'center',
+    justifyContent: 'flex-end',
   },
   updateBtn: {
     height: 35,
     width: 35,
     borderRadius: 12,
-    alignItems: "center",
-    justifyContent: "center",
-    alignSelf: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
   },
   timeStamp: {
-    alignSelf: "center",
+    alignSelf: 'center',
     fontSize: 10,
-    color: "grey",
-    fontStyle: "italic",
+    color: 'grey',
+    fontStyle: 'italic',
     marginRight: 7,
   },
 });
