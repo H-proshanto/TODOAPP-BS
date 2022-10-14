@@ -1,6 +1,6 @@
 import HelperMethodsContext from '../contexts/HelperMethodsContext';
 import React, { useContext } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Keyboard, StyleSheet, View } from 'react-native';
 import { ButtonUI } from '../components/ButtonUI';
 
 export const ReadOnlyViewBtns = ({

@@ -42,8 +42,8 @@ export function HelperMethodsProvider({ children }) {
         timeStamp: getTime(),
       },
     ]);
+
     setKey(key + 1);
-    Keyboard.dismiss();
 
     return true;
   };

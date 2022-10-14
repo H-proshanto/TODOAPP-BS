@@ -35,7 +35,7 @@ export const Home = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps="handled">
         <View style={styles.headerContainer}>
           <Text style={styles.headerText}>Simple ToDo</Text>
         </View>

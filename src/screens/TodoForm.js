@@ -49,7 +49,7 @@ export const TodoForm = ({ navigation, route }) => {
           placeholder="Description"
         />
       </ScrollView>
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps="always">
         <ReadOnlyViewBtns
           view={view}
           status={status}
