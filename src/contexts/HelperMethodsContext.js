@@ -21,7 +21,6 @@ export function HelperMethodsProvider({ children }) {
   };
 
   const clearAllData = () => {
-    setUserName('');
     setTaskList(new Map());
   };
 

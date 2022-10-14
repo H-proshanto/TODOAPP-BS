@@ -5,13 +5,9 @@ import { ButtonUI } from '../components/ButtonUI';
 
 export const Home = ({ navigation }) => {
   const [isMaxLength, setIsMaxLength] = useState(false);
-  const {
-    userName,
-    errorMessage,
-    setUserName,
-    setErrorMessage,
-    setSessionName,
-  } = useContext(HooksContext);
+  const [userName, setUserName] = useState('');
+  const { errorMessage, setErrorMessage, setSessionName } =
+    useContext(HooksContext);
 
   useEffect(() => {
     if (userName.length > 5) {
