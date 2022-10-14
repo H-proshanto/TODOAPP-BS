@@ -2,12 +2,13 @@ import HooksContext from '../contexts/HooksContext';
 import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, Text, View, TextInput, ScrollView } from 'react-native';
 import { ButtonUI } from '../components/ButtonUI';
+import HelperMethodsContext from '../contexts/HelperMethodsContext';
 
 export const Home = ({ navigation }) => {
   const [isMaxLength, setIsMaxLength] = useState(false);
   const [userName, setUserName] = useState('');
-  const { errorMessage, setErrorMessage, setSessionName } =
-    useContext(HooksContext);
+  const { errorMessage, setErrorMessage } = useContext(HooksContext);
+  const { login } = useContext(HelperMethodsContext);
 
   useEffect(() => {
     if (userName.length > 5) {
@@ -23,7 +24,7 @@ export const Home = ({ navigation }) => {
     const isLengthNull = userName.length === 0;
 
     if (!isLengthNull && !isMaxLength) {
-      setSessionName(userName);
+      login(userName);
       return true;
     }
 

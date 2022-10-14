@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { ButtonUI } from '../components/ButtonUI.js';
 import { TodoList } from '../components/TodoList';
+import HelperMethodsContext from '../contexts/HelperMethodsContext.js';
 
 export const DashBoard = ({ navigation }) => {
+  const { fetchAllTodo } = useContext(HelperMethodsContext);
+
+  setTimeout(fetchAllTodo, 0);
   return (
     <View style={styles.container}>
       <View style={styles.dashboard}>

@@ -4,6 +4,7 @@ const HooksContext = createContext();
 
 export function HooksProvider({ children }) {
   const [sessionName, setSessionName] = useState('');
+  const [sessionUserId, setSessionUserId] = useState(NaN);
   const [taskList, setTaskList] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -13,9 +14,11 @@ export function HooksProvider({ children }) {
         sessionName,
         taskList,
         errorMessage,
+        sessionUserId,
         setSessionName,
         setTaskList,
         setErrorMessage,
+        setSessionUserId,
       }}
     >
       {children}

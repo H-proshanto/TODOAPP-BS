@@ -42,8 +42,9 @@ export const TodoView = ({ title, status, id, timeStamp, navigation }) => {
         style={styles.checkbox}
         isChecked={status === 'done' ? true : false}
         onPress={isChecked => {
+          console.log(id);
           isChecked = !isChecked;
-          toggleCompletion(id);
+          toggleCompletion(id, status);
         }}
       />
     </View>
