@@ -6,10 +6,12 @@ const HelperMethodsContext = createContext();
 
 export function HelperMethodsProvider({ children }) {
   const [key, setKey] = useState(0);
-  const { taskList, setUserName, setTaskList, setErrorMessage } =
-    useContext(HooksContext);
+  const { taskList, setTaskList, setErrorMessage } = useContext(HooksContext);
 
-  const getTodo = id => taskList.get(id);
+  const getTodo = id => {
+    const [todo] = taskList.filter(task => task.id === id);
+    return todo;
+  };
 
   const getTime = () => {
     const today = new Date();
@@ -21,7 +23,7 @@ export function HelperMethodsProvider({ children }) {
   };
 
   const clearAllData = () => {
-    setTaskList(new Map());
+    setTaskList([]);
   };
 
   const updateTaskList = (title, description) => {
@@ -30,15 +32,16 @@ export function HelperMethodsProvider({ children }) {
       return false;
     }
 
-    taskList.set(key, {
-      title,
-      description,
-      status: 'pending',
-      id: key,
-      timeStamp: getTime(),
-    });
-
-    setTaskList(new Map(taskList));
+    setTaskList([
+      ...taskList,
+      {
+        title,
+        description,
+        status: 'pending',
+        id: key,
+        timeStamp: getTime(),
+      },
+    ]);
     setKey(key + 1);
     Keyboard.dismiss();
 
@@ -51,9 +54,11 @@ export function HelperMethodsProvider({ children }) {
       return false;
     }
 
-    taskList.get(id).title = title;
-    taskList.get(id).description = description;
-    setTaskList(new Map(taskList));
+    const currentTask = taskList.find(task => task.id === id);
+    currentTask.title = title;
+    currentTask.description = description;
+
+    setTaskList([...taskList]);
     Keyboard.dismiss();
     return true;
   };
@@ -64,8 +69,7 @@ export function HelperMethodsProvider({ children }) {
         text: 'Confirm',
         onPress: () => {
           navigation.pop();
-          taskList.delete(id);
-          setTaskList(new Map(taskList));
+          setTaskList(taskList.filter(task => task.id !== id));
         },
       },
       {
@@ -75,12 +79,10 @@ export function HelperMethodsProvider({ children }) {
   };
 
   const toggleCompletion = id => {
-    const task = taskList.get(id);
-    task.status =
-      task.status === 'pending'
-        ? (task.status = 'done')
-        : (task.status = 'pending');
-    setTaskList(new Map(taskList));
+    const currentTask = taskList.find(task => task.id === id);
+    const { status } = currentTask;
+    currentTask.status = status === 'pending' ? 'done' : 'pending';
+    setTaskList([...taskList]);
   };
 
   return (

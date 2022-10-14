@@ -4,7 +4,7 @@ const HooksContext = createContext();
 
 export function HooksProvider({ children }) {
   const [sessionName, setSessionName] = useState('');
-  const [taskList, setTaskList] = useState(new Map());
+  const [taskList, setTaskList] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
 
   return (

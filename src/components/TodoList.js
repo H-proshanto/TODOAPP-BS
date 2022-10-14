@@ -18,7 +18,7 @@ export const TodoList = ({ navigation }) => {
 
   return (
     <View style={styles.listContainer}>
-      <FlatList data={Array.from(taskList.values())} renderItem={renderItem} />
+      <FlatList data={taskList} renderItem={renderItem} />
     </View>
   );
 };
