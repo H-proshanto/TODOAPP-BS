@@ -1,14 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useContext } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
+import HooksContext from '../contexts/HooksContext';
 
 export const ButtonUI = ({ title, onPress }) => {
-  const [isPressed, setIsPressed] = useState(false);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setIsPressed(false);
-    }, 100);
-  });
+  const { isLoading, setIsLoading } = useContext(HooksContext);
 
   return (
     <View
@@ -16,15 +11,15 @@ export const ButtonUI = ({ title, onPress }) => {
         title === 'logout'
           ? styles.logoutBody
           : title === 'Next'
-          ? styles.loginContainer
-          : styles.body
+            ? styles.loginContainer
+            : styles.body
       }
     >
       <TouchableOpacity
-        disabled={isPressed}
-        onPress={() => {
-          setIsPressed(true);
-          onPress();
+        disabled={isLoading}
+        onPress={async () => {
+          await onPress();
+          setTimeout(() => setIsLoading(false), 0);
         }}
       >
         <View
@@ -32,25 +27,35 @@ export const ButtonUI = ({ title, onPress }) => {
             title === 'Create New'
               ? styles.dashboardButton
               : title === 'logout'
-              ? styles.logoutButton
-              : title === 'Next'
-              ? styles.loginButton
-              : styles.createButton
+                ? styles.logoutButton
+                : title === 'Next'
+                  ? styles.loginButton
+                  : styles.createButton
           }
         >
-          <Text
-            style={
-              title === 'Create New'
-                ? styles.dashboardText
-                : title === 'logout'
-                ? styles.logoutText
-                : title === 'Next'
-                ? styles.loginText
-                : styles.text
-            }
-          >
-            {title}
-          </Text>
+          {
+            isLoading && title !== 'Create New' && title !== 'logout' && title !== 'Edit'
+              ? <ActivityIndicator
+                style={
+                  title === 'Next'
+                    ? styles.loginText
+                    : styles.text
+                }
+                color="#ffffff" />
+              : <Text
+                style={
+                  title === 'Create New'
+                    ? styles.dashboardText
+                    : title === 'logout'
+                      ? styles.logoutText
+                      : title === 'Next'
+                        ? styles.loginText
+                        : styles.text
+                }
+              >
+                {title}
+              </Text>
+          }
         </View>
       </TouchableOpacity>
     </View>

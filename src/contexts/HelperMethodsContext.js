@@ -7,14 +7,13 @@ import axios from 'axios';
 const HelperMethodsContext = createContext();
 
 export function HelperMethodsProvider({ children }) {
-  const [key, setKey] = useState(0);
   const {
+    user,
     taskList,
-    sessionUserId,
-    setSessionName,
     setTaskList,
+    setIsLoading,
     setErrorMessage,
-    setSessionUserId,
+    setUser
   } = useContext(HooksContext);
 
   const getTodo = id => {
@@ -33,16 +32,11 @@ export function HelperMethodsProvider({ children }) {
           username: userName,
         },
       });
-      const { username, id } = response.data;
-      setSession(username, id);
+
+      setUser(response.data);
     } catch (error) {
       console.log(error.message);
     }
-  };
-
-  const setSession = (userName, id) => {
-    setSessionName(userName);
-    setSessionUserId(id);
   };
 
   const clearAllData = () => {
@@ -51,13 +45,14 @@ export function HelperMethodsProvider({ children }) {
 
   const fetchAllTodo = async () => {
     try {
+      await setIsLoading(true);
       const apiSubDirectory = 'tasks';
       const url = `${BASE_URL}/${apiSubDirectory}/`;
       const response = await axios({
         method: 'GET',
         url,
         headers: {
-          Userid: sessionUserId,
+          Userid: user.id,
         },
       });
 
@@ -97,17 +92,19 @@ export function HelperMethodsProvider({ children }) {
     try {
       const apiSubDirectory = 'tasks';
       const url = `${BASE_URL}/${apiSubDirectory}/`;
-      await axios({
+      const response = await axios({
         method: 'POST',
         url,
         headers: {
-          Userid: sessionUserId,
+          Userid: user.id,
         },
         data: {
           title: title,
           description: description,
         },
       });
+
+      setTaskList([...taskList, createTodo(response.data)]);
     } catch (error) {
       console.log(error.message);
     }
@@ -132,25 +129,31 @@ export function HelperMethodsProvider({ children }) {
         method: 'PATCH',
         url,
         headers: {
-          Userid: sessionUserId,
+          Userid: user.id,
         },
         data: {
           title: title,
           description: description,
         },
       });
+
+      const currentTask = taskList.find(task => task.id === id);
+      currentTask.title = title;
+      currentTask.description = description;
+
+      setTaskList([...taskList]);
     } catch (error) {
       console.log(error.message);
     }
   };
 
-  const deleteTask = (id, navigation) => {
+  const confimationWindow = (id, navigation) => {
     Alert.alert('Are you sure you want to delete this task', '', [
       {
         text: 'Confirm',
         onPress: () => {
+          deleteTask(id);
           navigation.pop();
-          setTaskList(taskList.filter(task => task.id !== id));
         },
       },
       {
@@ -158,6 +161,25 @@ export function HelperMethodsProvider({ children }) {
       },
     ]);
   };
+
+  const deleteTask = async (id) => {
+    try {
+      const apiSubDirectory = 'tasks';
+      const url = `${BASE_URL}/${apiSubDirectory}/${id}/`;
+      await axios({
+        method: 'DELETE',
+        url,
+        headers: {
+          Userid: user.id,
+        }
+      });
+
+      setTaskList(taskList.filter(task => task.id !== id));
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
 
   const toggleCompletion = async (id, status) => {
     try {
@@ -167,12 +189,13 @@ export function HelperMethodsProvider({ children }) {
         method: 'PATCH',
         url,
         headers: {
-          Userid: sessionUserId,
+          Userid: user.id,
         },
         data: {
           is_completed: status === 'done' ? false : true,
         },
       });
+
       const task = taskList.find(task => task.id === id);
       task.status = status === 'done' ? 'pending' : 'done';
       setTaskList([...taskList]);
@@ -188,7 +211,7 @@ export function HelperMethodsProvider({ children }) {
         clearAllData,
         updateTaskList,
         updateSpecificTask,
-        deleteTask,
+        confimationWindow,
         toggleCompletion,
         login,
         fetchAllTodo,

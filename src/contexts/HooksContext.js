@@ -3,22 +3,22 @@ import React, { createContext, useState } from 'react';
 const HooksContext = createContext();
 
 export function HooksProvider({ children }) {
-  const [sessionName, setSessionName] = useState('');
-  const [sessionUserId, setSessionUserId] = useState(NaN);
+  const [user, setUser] = useState({});
   const [taskList, setTaskList] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <HooksContext.Provider
       value={{
-        sessionName,
+        user,
         taskList,
         errorMessage,
-        sessionUserId,
-        setSessionName,
+        isLoading,
+        setUser,
         setTaskList,
         setErrorMessage,
-        setSessionUserId,
+        setIsLoading
       }}
     >
       {children}

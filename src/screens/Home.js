@@ -7,7 +7,7 @@ import HelperMethodsContext from '../contexts/HelperMethodsContext';
 export const Home = ({ navigation }) => {
   const [isMaxLength, setIsMaxLength] = useState(false);
   const [userName, setUserName] = useState('');
-  const { errorMessage, setErrorMessage } = useContext(HooksContext);
+  const { errorMessage, setErrorMessage, setIsLoading } = useContext(HooksContext);
   const { login } = useContext(HelperMethodsContext);
 
   useEffect(() => {
@@ -20,11 +20,11 @@ export const Home = ({ navigation }) => {
     }
   }, [userName]);
 
-  const isValidUserName = () => {
+  const isValidUserName = async () => {
     const isLengthNull = userName.length === 0;
 
     if (!isLengthNull && !isMaxLength) {
-      login(userName);
+      await login(userName);
       return true;
     }
 
@@ -56,14 +56,16 @@ export const Home = ({ navigation }) => {
         <ButtonUI
           navigation={navigation}
           title="Next"
-          onPress={() => {
-            if (isValidUserName()) {
+          onPress={async () => {
+            setIsLoading(true);
+            if (await isValidUserName()) {
               navigation.reset({
                 index: 0,
                 routes: [{ name: 'DashBoard' }],
               });
             }
-          }}
+          }
+          }
         />
       </ScrollView>
     </View>

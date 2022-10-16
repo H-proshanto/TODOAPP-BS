@@ -2,6 +2,7 @@ import HelperMethodsContext from '../contexts/HelperMethodsContext';
 import React, { useContext } from 'react';
 import { Keyboard, StyleSheet, View } from 'react-native';
 import { ButtonUI } from '../components/ButtonUI';
+import HooksContext from '../contexts/HooksContext';
 
 export const ReadOnlyViewBtns = ({
   navigation,
@@ -11,8 +12,9 @@ export const ReadOnlyViewBtns = ({
   title,
   description,
 }) => {
-  const { deleteTask, updateTaskList, updateSpecificTask } =
+  const { confimationWindow, updateTaskList, updateSpecificTask } =
     useContext(HelperMethodsContext);
+  const { setIsLoading } = useContext(HooksContext);
 
   return (
     <>
@@ -31,7 +33,8 @@ export const ReadOnlyViewBtns = ({
           <ButtonUI
             title={'Delete'}
             onPress={() => {
-              deleteTask(taskId, navigation);
+              setIsLoading(true);
+              confimationWindow(taskId, navigation);
             }}
           />
         </View>
@@ -39,8 +42,9 @@ export const ReadOnlyViewBtns = ({
         <View style={styles.buttonContainer}>
           <ButtonUI
             title={'Update'}
-            onPress={() => {
-              if (updateSpecificTask(taskId, title, description)) {
+            onPress={async () => {
+              setIsLoading(true);
+              if (await updateSpecificTask(taskId, title, description)) {
                 navigation.pop();
               }
             }}
@@ -50,8 +54,9 @@ export const ReadOnlyViewBtns = ({
         <View style={styles.buttonContainer}>
           <ButtonUI
             title={'Create'}
-            onPress={() => {
-              if (updateTaskList(title, description)) {
+            onPress={async () => {
+              setIsLoading(true);
+              if (await updateTaskList(title, description)) {
                 navigation.pop();
               }
             }}

@@ -41,10 +41,8 @@ export const TodoView = ({ title, status, id, timeStamp, navigation }) => {
       <BouncyCheckbox
         style={styles.checkbox}
         isChecked={status === 'done' ? true : false}
-        onPress={isChecked => {
-          console.log(id);
-          isChecked = !isChecked;
-          toggleCompletion(id, status);
+        onPress={async () => {
+          await toggleCompletion(id, status);
         }}
       />
     </View>

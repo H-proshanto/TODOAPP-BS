@@ -5,12 +5,12 @@ import { StyleSheet, Text, View } from 'react-native';
 import { ButtonUI } from './ButtonUI';
 
 export const HeaderUI = ({ navigation }) => {
-  const { sessionName } = useContext(HooksContext);
+  const { user } = useContext(HooksContext);
   const { clearAllData } = useContext(HelperMethodsContext);
 
   return (
     <View style={styles.userInfo}>
-      <Text style={styles.username}>{`Mr.${sessionName}`}</Text>
+      <Text style={styles.username}>{`Mr.${user.username}`}</Text>
       <ButtonUI
         navigation={navigation}
         title={'logout'}
