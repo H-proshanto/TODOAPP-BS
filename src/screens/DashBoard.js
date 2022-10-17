@@ -7,7 +7,7 @@ import HooksContext from '../contexts/HooksContext.js';
 
 export const DashBoard = ({ navigation }) => {
   const { fetchAllTodo } = useContext(HelperMethodsContext);
-  const { isLoading, setIsLoading } = useContext(HooksContext);
+  const { isLoading } = useContext(HooksContext);
 
   useEffect(() => {
     fetchAllTodo();
@@ -26,16 +26,15 @@ export const DashBoard = ({ navigation }) => {
           />
         </View>
       </View>
-
-      {isLoading
-        ?
-        <ActivityIndicator size={49} style={styles.loader} color="#89CFF0" />
-        : <>
-          <TodoList navigation={navigation} />
-        </>
+      {
+        isLoading
+          ?
+          <ActivityIndicator size={49} style={styles.loader} color="#89CFF0" />
+          :
+          <>
+            <TodoList navigation={navigation} />
+          </>
       }
-
-
     </View>
   );
 };

@@ -45,7 +45,6 @@ export function HelperMethodsProvider({ children }) {
 
   const fetchAllTodo = async () => {
     try {
-      await setIsLoading(true);
       const apiSubDirectory = 'tasks';
       const url = `${BASE_URL}/${apiSubDirectory}/`;
       const response = await axios({
@@ -154,6 +153,8 @@ export function HelperMethodsProvider({ children }) {
         onPress: () => {
           deleteTask(id);
           navigation.pop();
+          setTimeout(() => setIsLoading(true), 0);
+          setTimeout(() => setIsLoading(false), 500);
         },
       },
       {

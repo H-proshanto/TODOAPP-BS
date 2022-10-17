@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, Keyboard } from 'react-native';
 import HooksContext from '../contexts/HooksContext';
 
 export const ButtonUI = ({ title, onPress }) => {
@@ -19,7 +19,7 @@ export const ButtonUI = ({ title, onPress }) => {
         disabled={isLoading}
         onPress={async () => {
           await onPress();
-          setTimeout(() => setIsLoading(false), 0);
+          setTimeout(() => setIsLoading(false), 500);
         }}
       >
         <View

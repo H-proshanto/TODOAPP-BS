@@ -33,7 +33,6 @@ export const ReadOnlyViewBtns = ({
           <ButtonUI
             title={'Delete'}
             onPress={() => {
-              setIsLoading(true);
               confimationWindow(taskId, navigation);
             }}
           />
@@ -45,7 +44,7 @@ export const ReadOnlyViewBtns = ({
             onPress={async () => {
               setIsLoading(true);
               if (await updateSpecificTask(taskId, title, description)) {
-                navigation.pop();
+                setTimeout(() => navigation.pop(), 100);
               }
             }}
           />
@@ -55,9 +54,10 @@ export const ReadOnlyViewBtns = ({
           <ButtonUI
             title={'Create'}
             onPress={async () => {
+              Keyboard.dismiss();
               setIsLoading(true);
               if (await updateTaskList(title, description)) {
-                navigation.pop();
+                setTimeout(() => navigation.pop(), 100);
               }
             }}
           />
