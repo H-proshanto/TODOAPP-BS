@@ -1,5 +1,12 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, Keyboard } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator,
+  Keyboard,
+} from 'react-native';
 import HooksContext from '../contexts/HooksContext';
 
 export const ButtonUI = ({ title, onPress }) => {
@@ -11,8 +18,8 @@ export const ButtonUI = ({ title, onPress }) => {
         title === 'logout'
           ? styles.logoutBody
           : title === 'Next'
-            ? styles.loginContainer
-            : styles.body
+          ? styles.loginContainer
+          : styles.body
       }
     >
       <TouchableOpacity
@@ -27,35 +34,35 @@ export const ButtonUI = ({ title, onPress }) => {
             title === 'Create New'
               ? styles.dashboardButton
               : title === 'logout'
-                ? styles.logoutButton
-                : title === 'Next'
-                  ? styles.loginButton
-                  : styles.createButton
+              ? styles.logoutButton
+              : title === 'Next'
+              ? styles.loginButton
+              : styles.createButton
           }
         >
-          {
-            isLoading && title !== 'Create New' && title !== 'logout' && title !== 'Edit'
-              ? <ActivityIndicator
-                style={
-                  title === 'Next'
-                    ? styles.loginText
-                    : styles.text
-                }
-                color="#ffffff" />
-              : <Text
-                style={
-                  title === 'Create New'
-                    ? styles.dashboardText
-                    : title === 'logout'
-                      ? styles.logoutText
-                      : title === 'Next'
-                        ? styles.loginText
-                        : styles.text
-                }
-              >
-                {title}
-              </Text>
-          }
+          {isLoading &&
+          title !== 'Create New' &&
+          title !== 'logout' &&
+          title !== 'Edit' ? (
+            <ActivityIndicator
+              style={title === 'Next' ? styles.loginText : styles.text}
+              color="#ffffff"
+            />
+          ) : (
+            <Text
+              style={
+                title === 'Create New'
+                  ? styles.dashboardText
+                  : title === 'logout'
+                  ? styles.logoutText
+                  : title === 'Next'
+                  ? styles.loginText
+                  : styles.text
+              }
+            >
+              {title}
+            </Text>
+          )}
         </View>
       </TouchableOpacity>
     </View>
@@ -110,7 +117,7 @@ const styles = StyleSheet.create({
   },
   loginContainer: {
     alignItems: 'center',
-    marginTop: 14,
+    marginTop: 7,
   },
   loginButton: {
     backgroundColor: 'purple',

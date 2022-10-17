@@ -1,10 +1,18 @@
 import HelperMethodsContext from '../contexts/HelperMethodsContext';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
-import React, { useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import React, { useContext, useState } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  ActivityIndicator,
+} from 'react-native';
 
 export const TodoView = ({ title, status, id, timeStamp, navigation }) => {
   const { toggleCompletion } = useContext(HelperMethodsContext);
+  const [isMarking, setisMarking] = useState(false);
 
   return (
     <View style={styles.todoConatainer}>
@@ -36,15 +44,27 @@ export const TodoView = ({ title, status, id, timeStamp, navigation }) => {
           <Image style={styles.icon} source={require('../icons/edit.png')} />
         </TouchableOpacity>
       ) : (
-        <></>
+        <View style={styles.updateBtn}></View>
       )}
-      <BouncyCheckbox
-        style={styles.checkbox}
-        isChecked={status === 'done' ? true : false}
-        onPress={async () => {
-          await toggleCompletion(id, status);
-        }}
-      />
+
+      {isMarking ? (
+        <ActivityIndicator size={24} color="black" />
+      ) : (
+        <TouchableOpacity
+          style={styles.checkbox}
+          onPress={async () => {
+            setisMarking(true);
+            await toggleCompletion(id, status);
+            setTimeout(() => setisMarking(false), 0);
+          }}
+        >
+          {status === 'done' ? (
+            <Image source={require('../icons/checkmark.png')} />
+          ) : (
+            <></>
+          )}
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
@@ -64,8 +84,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
   },
   checkbox: {
+    height: 24,
+    width: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
     alignSelf: 'center',
-    justifyContent: 'flex-end',
+    borderWidth: 0.5,
+    borderColor: '#FFC651',
+    borderRadius: 12,
   },
   updateBtn: {
     height: 35,
@@ -90,4 +116,5 @@ const styles = StyleSheet.create({
   pendingTaskText: {
     textAlign: 'left',
   },
+  pending: {},
 });
