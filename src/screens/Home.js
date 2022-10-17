@@ -7,7 +7,8 @@ import HelperMethodsContext from '../contexts/HelperMethodsContext';
 export const Home = ({ navigation }) => {
   const [isMaxLength, setIsMaxLength] = useState(false);
   const [userName, setUserName] = useState('');
-  const { errorMessage, setErrorMessage, setIsLoading } = useContext(HooksContext);
+  const { errorMessage, setErrorMessage, setIsLoading } =
+    useContext(HooksContext);
   const { login } = useContext(HelperMethodsContext);
 
   useEffect(() => {
@@ -64,8 +65,7 @@ export const Home = ({ navigation }) => {
                 routes: [{ name: 'DashBoard' }],
               });
             }
-          }
-          }
+          }}
         />
       </ScrollView>
     </View>
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
   errorMessage: {
     color: 'red',
     fontWeight: 'bold',
-    padding: 14,
-    marginLeft: 14,
+    padding: 7,
+    marginLeft: 21,
   },
 });

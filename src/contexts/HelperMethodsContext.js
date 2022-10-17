@@ -13,7 +13,7 @@ export function HelperMethodsProvider({ children }) {
     setTaskList,
     setIsLoading,
     setErrorMessage,
-    setUser
+    setUser,
   } = useContext(HooksContext);
 
   const getTodo = id => {
@@ -163,7 +163,7 @@ export function HelperMethodsProvider({ children }) {
     ]);
   };
 
-  const deleteTask = async (id) => {
+  const deleteTask = async id => {
     try {
       const apiSubDirectory = 'tasks';
       const url = `${BASE_URL}/${apiSubDirectory}/${id}/`;
@@ -172,7 +172,7 @@ export function HelperMethodsProvider({ children }) {
         url,
         headers: {
           Userid: user.id,
-        }
+        },
       });
 
       setTaskList(taskList.filter(task => task.id !== id));
@@ -180,7 +180,6 @@ export function HelperMethodsProvider({ children }) {
       console.log(error.message);
     }
   };
-
 
   const toggleCompletion = async (id, status) => {
     try {
