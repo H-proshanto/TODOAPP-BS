@@ -50,7 +50,7 @@ export const ButtonUI = ({ title, onPress }) => {
             title !== 'logout' &&
             title !== 'Edit' ? (
             <ActivityIndicator
-              style={title === 'Next' ? styles.loginText : styles.text}
+              style={title === 'Next' ? styles.loginLoader : styles.text}
               color="#ffffff"
             />
           ) : (
@@ -136,4 +136,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     alignSelf: 'center',
   },
+  loginLoader: {
+    fontSize: 18,
+    paddingTop: 5,
+    paddingBottom: 6,
+    paddingLeft: 11,
+    paddingRight: 11,
+  }
 });

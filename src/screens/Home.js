@@ -26,6 +26,7 @@ export const Home = ({ navigation }) => {
       const isLengthNull = userName.length === 0;
 
       if (isLengthNull) {
+        setIsLoading(false);
         setErrorMessage('The User name can not be empty');
         return false;
       }
