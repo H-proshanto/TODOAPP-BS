@@ -22,17 +22,22 @@ export const Home = ({ navigation }) => {
   }, [userName]);
 
   const isValidUserName = async () => {
-    const isLengthNull = userName.length === 0;
+    try {
+      const isLengthNull = userName.length === 0;
 
-    if (!isLengthNull && !isMaxLength) {
+      if (isLengthNull) {
+        setErrorMessage('The User name can not be empty');
+        return false;
+      }
+
+      if (isMaxLength) return false;
+
       await login(userName);
-      return true;
-    }
 
-    if (isLengthNull) {
-      setErrorMessage('The User name can not be empty');
+      return true;
+    } catch (error) {
+      console.log('Error occured in Home : ', error.message);
     }
-    return false;
   };
 
   return (

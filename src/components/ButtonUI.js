@@ -18,15 +18,20 @@ export const ButtonUI = ({ title, onPress }) => {
         title === 'logout'
           ? styles.logoutBody
           : title === 'Next'
-          ? styles.loginContainer
-          : styles.body
+            ? styles.loginContainer
+            : styles.body
       }
     >
       <TouchableOpacity
         disabled={isLoading}
         onPress={async () => {
-          await onPress();
-          setTimeout(() => setIsLoading(false), 500);
+          try {
+            await onPress();
+          } catch (error) {
+            console.error(error);
+          } finally {
+            setTimeout(() => setIsLoading(false), 500);
+          }
         }}
       >
         <View
@@ -34,16 +39,16 @@ export const ButtonUI = ({ title, onPress }) => {
             title === 'Create New'
               ? styles.dashboardButton
               : title === 'logout'
-              ? styles.logoutButton
-              : title === 'Next'
-              ? styles.loginButton
-              : styles.createButton
+                ? styles.logoutButton
+                : title === 'Next'
+                  ? styles.loginButton
+                  : styles.createButton
           }
         >
           {isLoading &&
-          title !== 'Create New' &&
-          title !== 'logout' &&
-          title !== 'Edit' ? (
+            title !== 'Create New' &&
+            title !== 'logout' &&
+            title !== 'Edit' ? (
             <ActivityIndicator
               style={title === 'Next' ? styles.loginText : styles.text}
               color="#ffffff"
@@ -54,10 +59,10 @@ export const ButtonUI = ({ title, onPress }) => {
                 title === 'Create New'
                   ? styles.dashboardText
                   : title === 'logout'
-                  ? styles.logoutText
-                  : title === 'Next'
-                  ? styles.loginText
-                  : styles.text
+                    ? styles.logoutText
+                    : title === 'Next'
+                      ? styles.loginText
+                      : styles.text
               }
             >
               {title}

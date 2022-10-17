@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ButtonUI } from '../components/ButtonUI.js';
 import { TodoList } from '../components/TodoList';
 import HelperMethodsContext from '../contexts/HelperMethodsContext.js';
@@ -7,7 +7,7 @@ import HooksContext from '../contexts/HooksContext.js';
 
 export const DashBoard = ({ navigation }) => {
   const { fetchAllTodo } = useContext(HelperMethodsContext);
-  const { isLoading } = useContext(HooksContext);
+  const { isLoading, errorMessage, setErrorMessage } = useContext(HooksContext);
 
   useEffect(() => {
     fetchAllTodo();
@@ -16,24 +16,28 @@ export const DashBoard = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.dashboard}>
-        <Text style={styles.dashboardText}>My ToDos</Text>
-        <View style={styles.CreateTodoFormButton}>
-          <ButtonUI
-            navigation={navigation}
-            title={'Create New'}
-            onPress={() => navigation.navigate('TodoForm')}
-          />
-        </View>
-      </View>
       {
-        isLoading
+        errorMessage
           ?
-          <ActivityIndicator size={49} style={styles.loader} color="#89CFF0" />
-          :
-          <>
-            <TodoList navigation={navigation} />
-          </>
+          <View style={styles.errorContainer}>
+            <Text style={styles.errorText}> {errorMessage} </Text>
+            <Button title='Retry' onPress={() => setErrorMessage('')} />
+          </View>
+          : isLoading ?
+            <ActivityIndicator size={49} style={styles.loader} color="#89CFF0" />
+            : <>
+              <View style={styles.dashboard}>
+                <Text style={styles.dashboardText}>My ToDos</Text>
+                <View style={styles.CreateTodoFormButton}>
+                  <ButtonUI
+                    navigation={navigation}
+                    title={'Create New'}
+                    onPress={() => navigation.navigate('TodoForm')}
+                  />
+                </View>
+              </View>
+              <TodoList navigation={navigation} />
+            </>
       }
     </View>
   );
@@ -63,5 +67,15 @@ const styles = StyleSheet.create({
   loader: {
     marginTop: 91,
     alignSelf: 'center',
-  }
+  },
+  errorContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  errorText: {
+    fontSize: 20,
+    marginBottom: 35,
+
+  },
 });

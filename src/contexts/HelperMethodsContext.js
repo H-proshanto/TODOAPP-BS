@@ -36,6 +36,10 @@ export function HelperMethodsProvider({ children }) {
       setUser(response.data);
     } catch (error) {
       console.log(error.message);
+      Alert.alert('An issue occured', error.message, [{
+        text: 'Okay',
+      }]);
+      throw error;
     }
   };
 
@@ -64,6 +68,7 @@ export function HelperMethodsProvider({ children }) {
       );
     } catch (error) {
       console.log(error.message);
+      setErrorMessage(error.message);
     }
   };
 
@@ -77,14 +82,20 @@ export function HelperMethodsProvider({ children }) {
     };
   };
 
-  const updateTaskList = (title, description) => {
-    if (title === '') {
-      setErrorMessage('The title field can not be empty');
-      return false;
-    }
-    uploadTask(title, description);
+  const updateTaskList = async (title, description) => {
+    try {
+      if (title === '') {
+        setIsLoading(false);
+        setErrorMessage('The title field can not be empty');
+        return false;
+      }
+      await uploadTask(title, description);
 
-    return true;
+      return true;
+    }
+    catch (error) {
+      console.log(error);
+    }
   };
 
   const uploadTask = async (title, description) => {
@@ -106,18 +117,27 @@ export function HelperMethodsProvider({ children }) {
       setTaskList([...taskList, createTodo(response.data)]);
     } catch (error) {
       console.log(error.message);
+      Alert.alert('An issue occured', error.message, [{
+        text: 'Okay',
+      }]);
+      throw error;
     }
   };
 
-  const updateSpecificTask = (id, title, description) => {
-    if (title === '') {
-      setErrorMessage('The title field can not be empty');
-      return false;
-    }
+  const updateSpecificTask = async (id, title, description) => {
+    try {
+      if (title === '') {
+        setIsLoading(false);
+        setErrorMessage('The title field can not be empty');
+        return false;
+      }
 
-    uploadUpdatedTask(id, title, description);
-    Keyboard.dismiss();
-    return true;
+      await uploadUpdatedTask(id, title, description);
+      Keyboard.dismiss();
+      return true;
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   const uploadUpdatedTask = async (id, title, description) => {
@@ -143,6 +163,10 @@ export function HelperMethodsProvider({ children }) {
       setTaskList([...taskList]);
     } catch (error) {
       console.log(error.message);
+      Alert.alert('An issue occured', error.message, [{
+        text: 'Okay',
+      }]);
+      throw error;
     }
   };
 
@@ -150,7 +174,7 @@ export function HelperMethodsProvider({ children }) {
     Alert.alert('Are you sure you want to delete this task', '', [
       {
         text: 'Confirm',
-        onPress: () => {
+        onPress: async () => {
           deleteTask(id);
           navigation.pop();
           setTimeout(() => setIsLoading(true), 0);
@@ -178,6 +202,10 @@ export function HelperMethodsProvider({ children }) {
       setTaskList(taskList.filter(task => task.id !== id));
     } catch (error) {
       console.log(error.message);
+      Alert.alert('An issue occured', error.message, [{
+        text: 'Okay',
+      }]);
+      throw error;
     }
   };
 
@@ -201,6 +229,9 @@ export function HelperMethodsProvider({ children }) {
       setTaskList([...taskList]);
     } catch (error) {
       console.log(error.message);
+      Alert.alert('An issue occured could not mark/unmark', error.message, [{
+        text: 'Okay',
+      }]);
     }
   };
 
