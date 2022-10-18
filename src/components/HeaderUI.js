@@ -5,7 +5,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { ButtonUI } from './ButtonUI';
 
 export const HeaderUI = ({ navigation }) => {
-  const { user } = useContext(HooksContext);
+  const { user, setIsLoading } = useContext(HooksContext);
   const { clearAllData } = useContext(HelperMethodsContext);
 
   return (
@@ -14,7 +14,11 @@ export const HeaderUI = ({ navigation }) => {
       <ButtonUI
         navigation={navigation}
         title={'logout'}
+        body={styles.logoutBody}
+        button={styles.logoutButton}
+        text={styles.logoutText}
         onPress={() => {
+          setIsLoading(false);
           navigation.reset({
             index: 0,
             routes: [{ name: 'Home' }],
@@ -36,5 +40,24 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
     flexDirection: 'row',
+  },
+  logoutBody: {
+    alignSelf: 'center',
+    marginLeft: 7,
+    marginRight: 7,
+    marginTop: 3,
+  },
+  logoutButton: {
+    borderRadius: 14,
+    backgroundColor: '#03396c',
+    padding: 5,
+    width: 45,
+  },
+  logoutText: {
+    color: 'white',
+    fontSize: 12,
+    textAlign: 'center',
+    alignSelf: 'center',
+    textDecorationLine: 'underline',
   },
 });

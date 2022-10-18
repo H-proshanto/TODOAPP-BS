@@ -45,6 +45,7 @@ export function HelperMethodsProvider({ children }) {
 
   const clearAllData = () => {
     setTaskList([]);
+    setTimeout(() => setUser({}), 550);
   };
 
   const fetchAllTodo = async () => {
@@ -174,10 +175,11 @@ export function HelperMethodsProvider({ children }) {
     Alert.alert('Are you sure you want to delete this task', '', [
       {
         text: 'Confirm',
+        style: "destructive",
         onPress: async () => {
-          deleteTask(id);
+          setIsLoading(true);
+          await deleteTask(id);
           navigation.pop();
-          setTimeout(() => setIsLoading(true), 0);
           setTimeout(() => setIsLoading(false), 500);
         },
       },

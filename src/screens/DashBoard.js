@@ -1,13 +1,14 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { ActivityIndicator, Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useContext, useEffect } from 'react';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { ButtonUI } from '../components/ButtonUI.js';
 import { TodoList } from '../components/TodoList';
+import { ErrorScreen } from '../components/ErrorUI';
 import HelperMethodsContext from '../contexts/HelperMethodsContext.js';
 import HooksContext from '../contexts/HooksContext.js';
 
 export const DashBoard = ({ navigation }) => {
   const { fetchAllTodo } = useContext(HelperMethodsContext);
-  const { isLoading, errorMessage, setErrorMessage } = useContext(HooksContext);
+  const { errorMessage, isLoading } = useContext(HooksContext);
 
   useEffect(() => {
     fetchAllTodo();
@@ -16,28 +17,28 @@ export const DashBoard = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      {
-        errorMessage
+      {errorMessage
+        ?
+        <ErrorScreen />
+        : isLoading
           ?
-          <View style={styles.errorContainer}>
-            <Text style={styles.errorText}> {errorMessage} </Text>
-            <Button title='Retry' onPress={() => setErrorMessage('')} />
-          </View>
-          : isLoading ?
-            <ActivityIndicator size={49} style={styles.loader} color="#89CFF0" />
-            : <>
-              <View style={styles.dashboard}>
-                <Text style={styles.dashboardText}>My ToDos</Text>
-                <View style={styles.CreateTodoFormButton}>
-                  <ButtonUI
-                    navigation={navigation}
-                    title={'Create New'}
-                    onPress={() => navigation.navigate('TodoForm')}
-                  />
-                </View>
+          <ActivityIndicator size={49} style={styles.loader} color="#89CFF0" />
+          :
+          <>
+            <View style={styles.dashboard}>
+              <Text style={styles.dashboardText}>My ToDos</Text>
+              <View style={styles.CreateTodoFormButton}>
+                <ButtonUI
+                  navigation={navigation}
+                  title={'Create New'}
+                  button={styles.dashboardButton}
+                  text={styles.dashboardBtnText}
+                  onPress={() => navigation.navigate('TodoForm')}
+                />
               </View>
-              <TodoList navigation={navigation} />
-            </>
+            </View>
+            <TodoList navigation={navigation} />
+          </>
       }
     </View>
   );
@@ -68,14 +69,15 @@ const styles = StyleSheet.create({
     marginTop: 91,
     alignSelf: 'center',
   },
-  errorContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+  dashboardButton: {
+    backgroundColor: 'white',
+    width: 100,
   },
-  errorText: {
-    fontSize: 20,
-    marginBottom: 35,
-
+  dashboardBtnText: {
+    color: 'black',
+    fontSize: 21,
+    textAlign: 'right',
+    textDecorationLine: 'underline',
+    marginRight: 7,
   },
 });

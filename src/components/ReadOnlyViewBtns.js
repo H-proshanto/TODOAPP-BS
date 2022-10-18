@@ -32,6 +32,7 @@ export const ReadOnlyViewBtns = ({
           )}
           <ButtonUI
             title={'Delete'}
+            button={styles.deleteButton}
             onPress={() => {
               confimationWindow(taskId, navigation);
             }}
@@ -46,6 +47,7 @@ export const ReadOnlyViewBtns = ({
               if (await updateSpecificTask(taskId, title, description)) {
                 setTimeout(() => navigation.pop(), 100);
               }
+              setTimeout(() => setIsLoading(false), 500);
             }}
           />
         </View>
@@ -59,6 +61,7 @@ export const ReadOnlyViewBtns = ({
               if (await updateTaskList(title, description)) {
                 setTimeout(() => navigation.pop(), 100);
               }
+              setTimeout(() => setIsLoading(false), 500);
             }}
           />
         </View>
@@ -74,5 +77,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-evenly',
+  },
+  deleteButton: {
+    backgroundColor: 'crimson',
+    borderRadius: 14,
+    width: 100,
   },
 });

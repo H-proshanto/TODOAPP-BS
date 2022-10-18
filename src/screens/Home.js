@@ -63,6 +63,9 @@ export const Home = ({ navigation }) => {
         <ButtonUI
           navigation={navigation}
           title="Next"
+          body={styles.loginContainer}
+          button={styles.loginButton}
+          text={styles.loginText}
           onPress={async () => {
             setIsLoading(true);
             if (await isValidUserName()) {
@@ -71,6 +74,7 @@ export const Home = ({ navigation }) => {
                 routes: [{ name: 'DashBoard' }],
               });
             }
+            setTimeout(() => setIsLoading(false), 500);
           }}
         />
       </ScrollView>
@@ -109,5 +113,21 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     padding: 7,
     marginLeft: 21,
+  },
+  loginContainer: {
+    alignItems: 'center',
+    marginTop: 7,
+  },
+  loginButton: {
+    backgroundColor: 'purple',
+    paddingLeft: 100,
+    paddingRight: 100,
+  },
+  loginText: {
+    color: 'white',
+    fontSize: 18,
+    padding: 5,
+    textAlign: 'center',
+    alignSelf: 'center',
   },
 });
