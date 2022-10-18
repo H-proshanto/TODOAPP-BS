@@ -6,10 +6,10 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import HooksContext from '../contexts/HooksContext';
+import { useSelector } from 'react-redux';
 
 export const ButtonUI = ({ title, onPress, body, button, text }) => {
-  const { isLoading, setIsLoading } = useContext(HooksContext);
+  const isLoading = useSelector(state => state.loader.value);
 
   return (
     <View style={body || styles.body}>

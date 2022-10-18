@@ -3,6 +3,8 @@ import React, { useContext } from 'react';
 import { Keyboard, StyleSheet, View } from 'react-native';
 import { ButtonUI } from '../components/ButtonUI';
 import HooksContext from '../contexts/HooksContext';
+import { useDispatch } from 'react-redux';
+import { setLoader } from '../features/loader';
 
 export const ReadOnlyViewBtns = ({
   navigation,
@@ -14,7 +16,7 @@ export const ReadOnlyViewBtns = ({
 }) => {
   const { confimationWindow, updateTaskList, updateSpecificTask } =
     useContext(HelperMethodsContext);
-  const { setIsLoading } = useContext(HooksContext);
+  const dispatch = useDispatch();
 
   return (
     <>
@@ -43,11 +45,11 @@ export const ReadOnlyViewBtns = ({
           <ButtonUI
             title={'Update'}
             onPress={async () => {
-              setIsLoading(true);
+              dispatch(setLoader(true));
               if (await updateSpecificTask(taskId, title, description)) {
                 setTimeout(() => navigation.pop(), 100);
               }
-              setTimeout(() => setIsLoading(false), 500);
+              setTimeout(() => dispatch(setLoader(false)), 500);
             }}
           />
         </View>
@@ -57,11 +59,11 @@ export const ReadOnlyViewBtns = ({
             title={'Create'}
             onPress={async () => {
               Keyboard.dismiss();
-              setIsLoading(true);
+              dispatch(setLoader(true));
               if (await updateTaskList(title, description)) {
                 setTimeout(() => navigation.pop(), 100);
               }
-              setTimeout(() => setIsLoading(false), 500);
+              setTimeout(() => dispatch(setLoader(false)), 500);
             }}
           />
         </View>

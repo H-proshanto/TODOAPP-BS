@@ -3,10 +3,13 @@ import HelperMethodsContext from '../contexts/HelperMethodsContext';
 import React, { useContext } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { ButtonUI } from './ButtonUI';
+import { useDispatch } from 'react-redux';
+import { setLoader } from '../features/loader';
 
 export const HeaderUI = ({ navigation }) => {
-  const { user, setIsLoading } = useContext(HooksContext);
+  const { user } = useContext(HooksContext);
   const { clearAllData } = useContext(HelperMethodsContext);
+  const dispatch = useDispatch();
 
   return (
     <View style={styles.userInfo}>
@@ -18,7 +21,7 @@ export const HeaderUI = ({ navigation }) => {
         button={styles.logoutButton}
         text={styles.logoutText}
         onPress={() => {
-          setIsLoading(false);
+          dispatch(setLoader(false));
           navigation.reset({
             index: 0,
             routes: [{ name: 'Home' }],

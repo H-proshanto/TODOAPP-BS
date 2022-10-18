@@ -3,6 +3,8 @@ import React, { createContext, useContext, useState } from 'react';
 import { Alert, Keyboard } from 'react-native';
 import { BASE_URL } from '../config';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { setLoader } from '../features/loader';
 
 const HelperMethodsContext = createContext();
 
@@ -11,10 +13,10 @@ export function HelperMethodsProvider({ children }) {
     user,
     taskList,
     setTaskList,
-    setIsLoading,
     setErrorMessage,
     setUser,
   } = useContext(HooksContext);
+  const dispatch = useDispatch()
 
   const getTodo = id => {
     const [todo] = taskList.filter(task => task.id === id);
@@ -86,7 +88,7 @@ export function HelperMethodsProvider({ children }) {
   const updateTaskList = async (title, description) => {
     try {
       if (title === '') {
-        setIsLoading(false);
+        dispatch(setLoader(false))
         setErrorMessage('The title field can not be empty');
         return false;
       }
@@ -128,7 +130,7 @@ export function HelperMethodsProvider({ children }) {
   const updateSpecificTask = async (id, title, description) => {
     try {
       if (title === '') {
-        setIsLoading(false);
+        dispatch(setLoader(false))
         setErrorMessage('The title field can not be empty');
         return false;
       }
@@ -177,10 +179,10 @@ export function HelperMethodsProvider({ children }) {
         text: 'Confirm',
         style: "destructive",
         onPress: async () => {
-          setIsLoading(true);
+          dispatch(setLoader(true))
           await deleteTask(id);
           navigation.pop();
-          setTimeout(() => setIsLoading(false), 500);
+          setTimeout(() => dispatch(setLoader(false)), 500);
         },
       },
       {

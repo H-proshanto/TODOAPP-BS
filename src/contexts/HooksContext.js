@@ -6,7 +6,6 @@ export function HooksProvider({ children }) {
   const [user, setUser] = useState({});
   const [taskList, setTaskList] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <HooksContext.Provider
@@ -14,11 +13,9 @@ export function HooksProvider({ children }) {
         user,
         taskList,
         errorMessage,
-        isLoading,
         setUser,
         setTaskList,
         setErrorMessage,
-        setIsLoading
       }}
     >
       {children}

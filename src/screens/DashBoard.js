@@ -5,10 +5,12 @@ import { TodoList } from '../components/TodoList';
 import { ErrorScreen } from '../components/ErrorUI';
 import HelperMethodsContext from '../contexts/HelperMethodsContext.js';
 import HooksContext from '../contexts/HooksContext.js';
+import { useSelector } from 'react-redux';
 
 export const DashBoard = ({ navigation }) => {
   const { fetchAllTodo } = useContext(HelperMethodsContext);
-  const { errorMessage, isLoading } = useContext(HooksContext);
+  const { errorMessage } = useContext(HooksContext);
+  const isLoading = useSelector(state => state.loader.value);
 
   useEffect(() => {
     fetchAllTodo();
