@@ -1,5 +1,4 @@
-import HooksContext from '../contexts/HooksContext';
-import React, { useContext } from 'react';
+import React from 'react';
 import { View, StyleSheet, FlatList } from 'react-native';
 import { TodoView } from './TodoView';
 import { useSelector } from 'react-redux';

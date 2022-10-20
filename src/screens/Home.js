@@ -5,7 +5,6 @@ import { login } from '../features/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLoader } from '../features/loader';
 import { setErrorMessage } from '../features/error';
-import { toggleCompletion } from '../features/todo';
 
 export const Home = ({ navigation }) => {
   const [isMaxLength, setIsMaxLength] = useState(false);

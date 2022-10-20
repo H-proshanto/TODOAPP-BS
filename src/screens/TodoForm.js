@@ -1,4 +1,3 @@
-import HelperMethodsContext from '../contexts/HelperMethodsContext';
 import React, { useState, useEffect, useContext } from 'react';
 import { StyleSheet, View, ScrollView, Text } from 'react-native';
 import { InputField } from '../components/InputField';
@@ -12,13 +11,13 @@ export const TodoForm = ({ navigation, route }) => {
   const status = route.params?.status;
   const errorMessage = useSelector(state => state.error.value);
   const dispatch = useDispatch();
-  const { getTodo } = useContext(HelperMethodsContext);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const taskList = useSelector(state => state.todo.taskList)
 
   useEffect(() => {
     if (view === 'read' || view === 'update') {
-      const { title, description } = getTodo(taskId);
+      const { title, description } = taskList.find(task => task.id === taskId);
       setTitle(title);
       setDescription(description);
     }

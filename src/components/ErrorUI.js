@@ -1,14 +1,14 @@
-import React, { useContext, } from 'react';
+import React from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import HelperMethodsContext from '../contexts/HelperMethodsContext.js';
 import { setErrorMessage } from '../features/error.js';
 import { setLoader } from '../features/loader.js';
+import { fetchAllTodo } from '../features/todo.js';
 
 export const ErrorUI = () => {
-    const { fetchAllTodo } = useContext(HelperMethodsContext);
     const errorMessage = useSelector(state => state.error.value);
     const dispatch = useDispatch();
+    const userId = useSelector(state => state.user.user.id);
 
     return (
         <View style={styles.errorContainer}>
@@ -16,7 +16,7 @@ export const ErrorUI = () => {
             <Button title='Retry' onPress={async () => {
                 dispatch(setErrorMessage(''));
                 dispatch(setLoader(true));
-                await fetchAllTodo();
+                dispatch(fetchAllTodo(userId));
             }} />
         </View>
     );

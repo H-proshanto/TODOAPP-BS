@@ -1,32 +1,33 @@
-import HooksContext from '../contexts/HooksContext';
-import HelperMethodsContext from '../contexts/HelperMethodsContext';
-import React, { useContext } from 'react';
+import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { ButtonUI } from './ButtonUI';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLoader } from '../features/loader';
+import { clearList } from '../features/todo';
+import { logout } from '../features/user';
 
 export const HeaderUI = ({ navigation }) => {
   const { user } = useSelector(state => state.user)
-  const { clearAllData } = useContext(HelperMethodsContext);
   const dispatch = useDispatch();
+
+  const clearAllData = () => {
+    dispatch(logout);
+    dispatch(clearList());
+  };
 
   return (
     <View style={styles.userInfo}>
       <Text style={styles.username}>{`Mr.${user.username}`}</Text>
       <ButtonUI
-        navigation={navigation}
         title={'logout'}
         body={styles.logoutBody}
         button={styles.logoutButton}
         text={styles.logoutText}
         onPress={() => {
-          dispatch(setLoader(false));
           navigation.reset({
             index: 0,
             routes: [{ name: 'Home' }],
           });
-          clearAllData();
         }}
       />
     </View>

@@ -1,9 +1,9 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { ButtonUI } from '../components/ButtonUI.js';
 import { TodoList } from '../components/TodoList';
 import { ErrorUI } from '../components/ErrorUI.js';
-import { fetchAllTodo, toggleCompletion } from '../features/todo.js';
+import { fetchAllTodo } from '../features/todo.js';
 import { useDispatch, useSelector } from 'react-redux';
 
 export const DashBoard = ({ navigation }) => {

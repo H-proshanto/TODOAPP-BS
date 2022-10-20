@@ -94,6 +94,9 @@ export const toggleCompletion = createAsyncThunk('todo/toggleCompletion', async 
 export const todoSlice = createSlice({
     name: 'todo',
     initialState,
+    reducers: {
+        clearList: () => initialState
+    },
     extraReducers: builder => {
         builder
             .addCase(fetchAllTodo.pending, (state) => {
@@ -167,9 +170,7 @@ export const todoSlice = createSlice({
     }
 })
 
-
-
-
+export const { clearList } = todoSlice.actions;
 export default todoSlice.reducer
 
 // } catch (error) {

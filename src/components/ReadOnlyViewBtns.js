@@ -1,12 +1,12 @@
-import HelperMethodsContext from '../contexts/HelperMethodsContext';
-import React, { useContext } from 'react';
-import { Keyboard, StyleSheet, View } from 'react-native';
+import React from 'react';
+import { Alert, Keyboard, StyleSheet, View } from 'react-native';
 import { ButtonUI } from '../components/ButtonUI';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLoader } from '../features/loader';
 import { setErrorMessage } from '../features/error';
 import { uploadUpdatedTask } from '../features/todo';
 import { uploadTask } from '../features/todo';
+import { deleteTask } from '../features/todo';
 
 export const ReadOnlyViewBtns = ({
   navigation,
@@ -16,7 +16,6 @@ export const ReadOnlyViewBtns = ({
   title,
   description,
 }) => {
-  const { confimationWindow } = useContext(HelperMethodsContext);
   const userId = useSelector(state => state.user.user.id);
   const dispatch = useDispatch();
 
@@ -29,6 +28,24 @@ export const ReadOnlyViewBtns = ({
 
     return true;
   }
+
+  const confimationWindow = (userId, taskId, navigation) => {
+    Alert.alert('Are you sure you want to delete this task', '', [
+      {
+        text: 'Confirm',
+        style: "destructive",
+        onPress: async () => {
+          dispatch(deleteTask({ taskId, userId }))
+          setTimeout(() => dispatch(setLoader(true)), 0)
+          setTimeout(() => navigation.pop(), 100)
+          setTimeout(() => dispatch(setLoader(false)), 500);
+        },
+      },
+      {
+        text: 'Cancel',
+      },
+    ]);
+  };
 
   return (
     <>
@@ -59,11 +76,11 @@ export const ReadOnlyViewBtns = ({
             onPress={async () => {
               if (!isValidTitle()) return;
 
-              // dispatch(setLoader(true));
               dispatch(uploadUpdatedTask({ userId, taskId, title, description }))
+              setTimeout(() => dispatch(setLoader(true)), 0);
               Keyboard.dismiss();
               setTimeout(() => navigation.pop(), 100);
-              // setTimeout(() => dispatch(setLoader(false)), 500);
+              setTimeout(() => dispatch(setLoader(false)), 500);
             }}
           />
         </View>
@@ -75,10 +92,10 @@ export const ReadOnlyViewBtns = ({
               if (!isValidTitle()) return;
 
               Keyboard.dismiss();
-              // dispatch(setLoader(true));
-              dispatch(uploadTask({ userId, title, description }))
+              dispatch(uploadTask({ userId, title, description }));
+              setTimeout(() => dispatch(setLoader(true)), 0);
               setTimeout(() => navigation.pop(), 100);
-              // setTimeout(() => dispatch(setLoader(false)), 500);
+              setTimeout(() => dispatch(setLoader(false)), 500);
             }}
           />
         </View>
