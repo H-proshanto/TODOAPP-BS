@@ -1,17 +1,18 @@
-import HooksContext from '../contexts/HooksContext';
-import React, { useContext, useEffect, useState } from 'react';
-import { StyleSheet, Text, View, TextInput, ScrollView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, TextInput, ScrollView, Alert } from 'react-native';
 import { ButtonUI } from '../components/ButtonUI';
-import HelperMethodsContext from '../contexts/HelperMethodsContext';
+import { login } from '../features/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLoader } from '../features/loader';
 import { setErrorMessage } from '../features/error';
+import { toggleCompletion } from '../features/todo';
 
 export const Home = ({ navigation }) => {
   const [isMaxLength, setIsMaxLength] = useState(false);
   const [userName, setUserName] = useState('');
-  const { login } = useContext(HelperMethodsContext);
   const errorMessage = useSelector(state => state.error.value);
+  const error = useSelector(state => state.user.error);
+  const userStatus = useSelector(state => state.user.status);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -24,24 +25,36 @@ export const Home = ({ navigation }) => {
     }
   }, [userName]);
 
-  const isValidUserName = async () => {
-    try {
-      const isLengthNull = userName.length === 0;
-
-      if (isLengthNull) {
-        dispatch(setLoader(false));
-        dispatch(setErrorMessage('The User name can not be empty'));
-        return false;
-      }
-
-      if (isMaxLength) return false;
-
-      await login(userName);
-
-      return true;
-    } catch (error) {
-      console.log('Error occured in Home : ', error.message);
+  useEffect(() => {
+    if (userStatus === 'running') dispatch(setLoader(true));
+    if (userStatus === 'error') {
+      dispatch(setLoader(false));
+      Alert.alert('An issue occured', error, [{
+        text: 'Okay',
+      }]);
     }
+
+    if (userStatus === 'resolved') {
+      setTimeout(() => dispatch(setLoader(false)), 500);
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'DashBoard' }],
+      });
+    }
+  }, [userStatus])
+
+  const isValidUserName = () => {
+    const isLengthNull = userName.length === 0;
+
+    if (isMaxLength) return false;
+
+    if (isLengthNull) {
+      dispatch(setLoader(false));
+      dispatch(setErrorMessage('The User name can not be empty'));
+      return false;
+    }
+
+    return true;
   };
 
   return (
@@ -70,14 +83,8 @@ export const Home = ({ navigation }) => {
           button={styles.loginButton}
           text={styles.loginText}
           onPress={async () => {
-            dispatch(setLoader(true));
-            if (await isValidUserName()) {
-              navigation.reset({
-                index: 0,
-                routes: [{ name: 'DashBoard' }],
-              });
-            }
-            setTimeout(() => dispatch(setLoader(false)), 500);
+            if (isValidUserName())
+              dispatch(login(userName));
           }}
         />
       </ScrollView>

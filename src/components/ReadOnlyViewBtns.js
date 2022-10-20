@@ -2,9 +2,10 @@ import HelperMethodsContext from '../contexts/HelperMethodsContext';
 import React, { useContext } from 'react';
 import { Keyboard, StyleSheet, View } from 'react-native';
 import { ButtonUI } from '../components/ButtonUI';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setLoader } from '../features/loader';
 import { setErrorMessage } from '../features/error';
+import { uploadUpdatedTask } from '../features/todo';
 
 export const ReadOnlyViewBtns = ({
   navigation,
@@ -14,8 +15,8 @@ export const ReadOnlyViewBtns = ({
   title,
   description,
 }) => {
-  const { confimationWindow, uploadTask, uploadUpdatedTask } =
-    useContext(HelperMethodsContext);
+  const { confimationWindow, uploadTask } = useContext(HelperMethodsContext);
+  const userId = useSelector(state => state.user.user.id);
   const dispatch = useDispatch();
 
   const isValidTitle = () => {
@@ -32,16 +33,16 @@ export const ReadOnlyViewBtns = ({
     <>
       {view === 'read' ? (
         <View style={styles.buttonContainer}>
-          {status === 'pending' ? (
-            <ButtonUI
-              title={'Edit'}
-              onPress={() =>
-                navigation.navigate('TodoForm', { taskId, view: 'update' })
-              }
-            />
-          ) : (
-            <></>
-          )}
+          {status
+            ? (<></>)
+            : (
+              <ButtonUI
+                title={'Edit'}
+                onPress={() =>
+                  navigation.navigate('TodoForm', { taskId, view: 'update' })
+                }
+              />
+            )}
           <ButtonUI
             title={'Delete'}
             button={styles.deleteButton}
@@ -57,11 +58,11 @@ export const ReadOnlyViewBtns = ({
             onPress={async () => {
               if (!isValidTitle()) return;
 
-              dispatch(setLoader(true));
-              await uploadUpdatedTask(taskId, title, description);
+              // dispatch(setLoader(true));
+              dispatch(uploadUpdatedTask({ userId, taskId, title, description }))
               Keyboard.dismiss();
               setTimeout(() => navigation.pop(), 100);
-              setTimeout(() => dispatch(setLoader(false)), 500);
+              // setTimeout(() => dispatch(setLoader(false)), 500);
             }}
           />
         </View>

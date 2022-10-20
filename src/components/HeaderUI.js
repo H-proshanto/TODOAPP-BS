@@ -3,11 +3,11 @@ import HelperMethodsContext from '../contexts/HelperMethodsContext';
 import React, { useContext } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { ButtonUI } from './ButtonUI';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setLoader } from '../features/loader';
 
 export const HeaderUI = ({ navigation }) => {
-  const { user } = useContext(HooksContext);
+  const { user } = useSelector(state => state.user)
   const { clearAllData } = useContext(HelperMethodsContext);
   const dispatch = useDispatch();
 

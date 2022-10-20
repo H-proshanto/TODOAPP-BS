@@ -1,5 +1,5 @@
-import HelperMethodsContext from '../contexts/HelperMethodsContext';
 import React, { useContext, useState } from 'react';
+import { toggleCompletion } from '../features/todo';
 import {
   View,
   Text,
@@ -8,10 +8,12 @@ import {
   Image,
   ActivityIndicator,
 } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
 export const TodoView = ({ title, status, id, timeStamp, navigation }) => {
-  const { toggleCompletion } = useContext(HelperMethodsContext);
   const [isMarking, setisMarking] = useState(false);
+  const userId = useSelector(state => state.user.user.id);
+  const dispatch = useDispatch();
 
   return (
     <View style={styles.todoConatainer}>
@@ -23,7 +25,7 @@ export const TodoView = ({ title, status, id, timeStamp, navigation }) => {
       >
         <Text
           style={
-            status === 'done'
+            status
               ? styles.completedTaskText
               : styles.pendingTaskText
           }
@@ -33,18 +35,18 @@ export const TodoView = ({ title, status, id, timeStamp, navigation }) => {
       </TouchableOpacity>
       <Text style={styles.timeStamp}>{timeStamp}</Text>
 
-      {status === 'pending' ? (
-        <TouchableOpacity
-          style={styles.updateBtn}
-          onPress={() => {
-            navigation.navigate('TodoForm', { taskId: id, view: 'update' });
-          }}
-        >
-          <Image style={styles.icon} source={require('../icons/edit.png')} />
-        </TouchableOpacity>
-      ) : (
-        <View style={styles.updateBtn}></View>
-      )}
+      {status
+        ? (<View style={styles.updateBtn}></View>)
+        : (
+          <TouchableOpacity
+            style={styles.updateBtn}
+            onPress={() => {
+              navigation.navigate('TodoForm', { taskId: id, view: 'update' });
+            }}
+          >
+            <Image style={styles.icon} source={require('../icons/edit.png')} />
+          </TouchableOpacity>
+        )}
 
       {isMarking ? (
         <ActivityIndicator size={24} color="black" />
@@ -53,11 +55,11 @@ export const TodoView = ({ title, status, id, timeStamp, navigation }) => {
           style={styles.checkbox}
           onPress={async () => {
             setisMarking(true);
-            await toggleCompletion(id, status);
-            setTimeout(() => setisMarking(false), 0);
+            dispatch(toggleCompletion({ taskId: id, status, userId }));
+            setTimeout(() => setisMarking(false), 200);
           }}
         >
-          {status === 'done' ? (
+          {status ? (
             <Image source={require('../icons/checkmark.png')} />
           ) : (
             <></>

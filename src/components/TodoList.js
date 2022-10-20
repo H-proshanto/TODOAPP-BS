@@ -2,14 +2,15 @@ import HooksContext from '../contexts/HooksContext';
 import React, { useContext } from 'react';
 import { View, StyleSheet, FlatList } from 'react-native';
 import { TodoView } from './TodoView';
+import { useSelector } from 'react-redux';
 
 export const TodoList = ({ navigation }) => {
-  const { taskList } = useContext(HooksContext);
+  const { taskList } = useSelector(state => state.todo);
 
   const renderItem = ({ item }) => (
     <TodoView
       title={item.title}
-      status={item.status}
+      status={item.is_completed}
       id={item.id}
       timeStamp={item.timeStamp}
       navigation={navigation}

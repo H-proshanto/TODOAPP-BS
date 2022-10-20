@@ -3,16 +3,17 @@ import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { ButtonUI } from '../components/ButtonUI.js';
 import { TodoList } from '../components/TodoList';
 import { ErrorUI } from '../components/ErrorUI.js';
-import HelperMethodsContext from '../contexts/HelperMethodsContext.js';
-import { useSelector } from 'react-redux';
+import { fetchAllTodo, toggleCompletion } from '../features/todo.js';
+import { useDispatch, useSelector } from 'react-redux';
 
 export const DashBoard = ({ navigation }) => {
-  const { fetchAllTodo } = useContext(HelperMethodsContext);
   const errorMessage = useSelector(state => state.error.value)
   const isLoading = useSelector(state => state.loader.value);
+  const userId = useSelector(state => state.user.user.id);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    fetchAllTodo();
+    dispatch(fetchAllTodo(userId));
   }, [])
 
   if (errorMessage) return (<ErrorUI />)
