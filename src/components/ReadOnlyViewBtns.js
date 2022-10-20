@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setLoader } from '../features/loader';
 import { setErrorMessage } from '../features/error';
 import { uploadUpdatedTask } from '../features/todo';
+import { uploadTask } from '../features/todo';
 
 export const ReadOnlyViewBtns = ({
   navigation,
@@ -15,7 +16,7 @@ export const ReadOnlyViewBtns = ({
   title,
   description,
 }) => {
-  const { confimationWindow, uploadTask } = useContext(HelperMethodsContext);
+  const { confimationWindow } = useContext(HelperMethodsContext);
   const userId = useSelector(state => state.user.user.id);
   const dispatch = useDispatch();
 
@@ -47,7 +48,7 @@ export const ReadOnlyViewBtns = ({
             title={'Delete'}
             button={styles.deleteButton}
             onPress={() => {
-              confimationWindow(taskId, navigation);
+              confimationWindow(userId, taskId, navigation);
             }}
           />
         </View>
@@ -74,10 +75,10 @@ export const ReadOnlyViewBtns = ({
               if (!isValidTitle()) return;
 
               Keyboard.dismiss();
-              dispatch(setLoader(true));
-              await uploadTask(title, description)
+              // dispatch(setLoader(true));
+              dispatch(uploadTask({ userId, title, description }))
               setTimeout(() => navigation.pop(), 100);
-              setTimeout(() => dispatch(setLoader(false)), 500);
+              // setTimeout(() => dispatch(setLoader(false)), 500);
             }}
           />
         </View>

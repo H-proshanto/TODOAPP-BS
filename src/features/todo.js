@@ -24,24 +24,25 @@ export const fetchAllTodo = createAsyncThunk('todo/fetchAllTodo', async (id) => 
     return response.data;
 });
 
-export const toggleCompletion = createAsyncThunk('todo/toggleCompletion', async (params) => {
+export const uploadTask = createAsyncThunk('todo/uploadTask', async params => {
     const apiSubDirectory = 'tasks';
-    const url = `${BASE_URL}/${apiSubDirectory}/${params.taskId}/`;
+    const url = `${BASE_URL}/${apiSubDirectory}/`;
     const response = await axios({
-        method: 'PATCH',
+        method: 'POST',
         url,
         headers: {
             Userid: params.userId,
         },
         data: {
-            is_completed: !params.status,
+            title: params.title,
+            description: params.description,
         },
     });
 
     return response.data;
 });
 
-export const uploadUpdatedTask = createAsyncThunk('todo/uploadUpdatedTask', async (params) => {
+export const uploadUpdatedTask = createAsyncThunk('todo/uploadUpdatedTask', async params => {
     const apiSubDirectory = 'tasks';
     const url = `${BASE_URL}/${apiSubDirectory}/${params.taskId}/`;
     const response = await axios({
@@ -53,6 +54,37 @@ export const uploadUpdatedTask = createAsyncThunk('todo/uploadUpdatedTask', asyn
         data: {
             title: params.title,
             description: params.description,
+        },
+    });
+
+    return response.data;
+});
+
+export const deleteTask = createAsyncThunk('todo/deleteTask', async params => {
+    const apiSubDirectory = 'tasks';
+    const url = `${BASE_URL}/${apiSubDirectory}/${params.taskId}/`;
+    await axios({
+        method: 'DELETE',
+        url,
+        headers: {
+            Userid: params.userId,
+        },
+    });
+
+    return params;
+});
+
+export const toggleCompletion = createAsyncThunk('todo/toggleCompletion', async params => {
+    const apiSubDirectory = 'tasks';
+    const url = `${BASE_URL}/${apiSubDirectory}/${params.taskId}/`;
+    const response = await axios({
+        method: 'PATCH',
+        url,
+        headers: {
+            Userid: params.userId,
+        },
+        data: {
+            is_completed: !params.status,
         },
     });
 
@@ -73,6 +105,19 @@ export const todoSlice = createSlice({
                 state.status = 'resolved'
             })
             .addCase(fetchAllTodo.rejected, (state, action) => {
+                state.taskList = {};
+                state.error = action.error.message;
+                state.status = 'error';
+            })
+            .addCase(uploadTask.pending, (state) => {
+                state.status = 'running'
+            })
+            .addCase(uploadTask.fulfilled, (state, action) => {
+                state.taskList = [...state.taskList, action.payload];
+                state.error = '';
+                state.status = 'resolved'
+            })
+            .addCase(uploadTask.rejected, (state, action) => {
                 state.taskList = {};
                 state.error = action.error.message;
                 state.status = 'error';
@@ -102,6 +147,19 @@ export const todoSlice = createSlice({
                 state.status = 'resolved'
             })
             .addCase(uploadUpdatedTask.rejected, (state, action) => {
+                state.taskList = {};
+                state.error = action.error.message;
+                state.status = 'error';
+            })
+            .addCase(deleteTask.pending, (state) => {
+                state.status = 'running'
+            })
+            .addCase(deleteTask.fulfilled, (state, action) => {
+                state.taskList = state.taskList.filter(task => task.id !== action.payload.taskId)
+                state.error = '';
+                state.status = 'resolved'
+            })
+            .addCase(deleteTask.rejected, (state, action) => {
                 state.taskList = {};
                 state.error = action.error.message;
                 state.status = 'error';
