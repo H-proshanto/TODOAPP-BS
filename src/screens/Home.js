@@ -3,24 +3,24 @@ import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, Text, View, TextInput, ScrollView } from 'react-native';
 import { ButtonUI } from '../components/ButtonUI';
 import HelperMethodsContext from '../contexts/HelperMethodsContext';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setLoader } from '../features/loader';
+import { setErrorMessage } from '../features/error';
 
 export const Home = ({ navigation }) => {
   const [isMaxLength, setIsMaxLength] = useState(false);
   const [userName, setUserName] = useState('');
-  const { errorMessage, setErrorMessage } =
-    useContext(HooksContext);
   const { login } = useContext(HelperMethodsContext);
+  const errorMessage = useSelector(state => state.error.value);
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (userName.length > 5) {
       setIsMaxLength(true);
-      setErrorMessage('Maximum characters allowed : 5');
+      dispatch(setErrorMessage('Maximum characters allowed : 5'));
     } else {
       setIsMaxLength(false);
-      setErrorMessage('');
+      dispatch(setErrorMessage(''));
     }
   }, [userName]);
 
@@ -30,7 +30,7 @@ export const Home = ({ navigation }) => {
 
       if (isLengthNull) {
         dispatch(setLoader(false));
-        setErrorMessage('The User name can not be empty');
+        dispatch(setErrorMessage('The User name can not be empty'));
         return false;
       }
 

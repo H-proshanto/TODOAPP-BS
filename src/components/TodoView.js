@@ -1,5 +1,4 @@
 import HelperMethodsContext from '../contexts/HelperMethodsContext';
-import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import React, { useContext, useState } from 'react';
 import {
   View,

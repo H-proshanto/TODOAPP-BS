@@ -2,45 +2,42 @@ import React, { useContext, useEffect } from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { ButtonUI } from '../components/ButtonUI.js';
 import { TodoList } from '../components/TodoList';
-import { ErrorScreen } from '../components/ErrorUI';
+import { ErrorUI } from '../components/ErrorUI.js';
 import HelperMethodsContext from '../contexts/HelperMethodsContext.js';
-import HooksContext from '../contexts/HooksContext.js';
 import { useSelector } from 'react-redux';
 
 export const DashBoard = ({ navigation }) => {
   const { fetchAllTodo } = useContext(HelperMethodsContext);
-  const { errorMessage } = useContext(HooksContext);
+  const errorMessage = useSelector(state => state.error.value)
   const isLoading = useSelector(state => state.loader.value);
 
   useEffect(() => {
     fetchAllTodo();
   }, [])
 
+  if (errorMessage) return (<ErrorUI />)
 
   return (
     <View style={styles.container}>
-      {errorMessage
+      {isLoading
         ?
-        <ErrorScreen />
-        : isLoading
-          ?
-          <ActivityIndicator size={49} style={styles.loader} color="#89CFF0" />
-          :
-          <>
-            <View style={styles.dashboard}>
-              <Text style={styles.dashboardText}>My ToDos</Text>
-              <View style={styles.CreateTodoFormButton}>
-                <ButtonUI
-                  navigation={navigation}
-                  title={'Create New'}
-                  button={styles.dashboardButton}
-                  text={styles.dashboardBtnText}
-                  onPress={() => navigation.navigate('TodoForm')}
-                />
-              </View>
+        <ActivityIndicator size={49} style={styles.loader} color="#89CFF0" />
+        :
+        <>
+          <View style={styles.dashboard}>
+            <Text style={styles.dashboardText}>My ToDos</Text>
+            <View style={styles.CreateTodoFormButton}>
+              <ButtonUI
+                navigation={navigation}
+                title={'Create New'}
+                button={styles.dashboardButton}
+                text={styles.dashboardBtnText}
+                onPress={() => navigation.navigate('TodoForm')}
+              />
             </View>
-            <TodoList navigation={navigation} />
-          </>
+          </View>
+          <TodoList navigation={navigation} />
+        </>
       }
     </View>
   );

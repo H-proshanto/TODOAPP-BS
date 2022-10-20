@@ -5,6 +5,7 @@ import { BASE_URL } from '../config';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { setLoader } from '../features/loader';
+import { setErrorMessage } from '../features/error';
 
 const HelperMethodsContext = createContext();
 
@@ -13,7 +14,6 @@ export function HelperMethodsProvider({ children }) {
     user,
     taskList,
     setTaskList,
-    setErrorMessage,
     setUser,
   } = useContext(HooksContext);
   const dispatch = useDispatch()
@@ -71,7 +71,7 @@ export function HelperMethodsProvider({ children }) {
       );
     } catch (error) {
       console.log(error.message);
-      setErrorMessage(error.message);
+      dispatch(setErrorMessage(error.message));
     }
   };
 
@@ -83,22 +83,6 @@ export function HelperMethodsProvider({ children }) {
       id: task.id,
       timeStamp: task.created_at.slice(0, 10),
     };
-  };
-
-  const updateTaskList = async (title, description) => {
-    try {
-      if (title === '') {
-        dispatch(setLoader(false))
-        setErrorMessage('The title field can not be empty');
-        return false;
-      }
-      await uploadTask(title, description);
-
-      return true;
-    }
-    catch (error) {
-      console.log(error);
-    }
   };
 
   const uploadTask = async (title, description) => {
@@ -124,22 +108,6 @@ export function HelperMethodsProvider({ children }) {
         text: 'Okay',
       }]);
       throw error;
-    }
-  };
-
-  const updateSpecificTask = async (id, title, description) => {
-    try {
-      if (title === '') {
-        dispatch(setLoader(false))
-        setErrorMessage('The title field can not be empty');
-        return false;
-      }
-
-      await uploadUpdatedTask(id, title, description);
-      Keyboard.dismiss();
-      return true;
-    } catch (error) {
-      console.log(error.message);
     }
   };
 
@@ -179,7 +147,7 @@ export function HelperMethodsProvider({ children }) {
         text: 'Confirm',
         style: "destructive",
         onPress: async () => {
-          dispatch(setLoader(true))
+          dispatch(setLoader(true));
           await deleteTask(id);
           navigation.pop();
           setTimeout(() => dispatch(setLoader(false)), 500);
@@ -244,8 +212,8 @@ export function HelperMethodsProvider({ children }) {
       value={{
         getTodo,
         clearAllData,
-        updateTaskList,
-        updateSpecificTask,
+        uploadTask,
+        uploadUpdatedTask,
         confimationWindow,
         toggleCompletion,
         login,

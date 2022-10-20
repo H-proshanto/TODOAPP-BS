@@ -2,9 +2,9 @@ import HelperMethodsContext from '../contexts/HelperMethodsContext';
 import React, { useContext } from 'react';
 import { Keyboard, StyleSheet, View } from 'react-native';
 import { ButtonUI } from '../components/ButtonUI';
-import HooksContext from '../contexts/HooksContext';
 import { useDispatch } from 'react-redux';
 import { setLoader } from '../features/loader';
+import { setErrorMessage } from '../features/error';
 
 export const ReadOnlyViewBtns = ({
   navigation,
@@ -14,9 +14,19 @@ export const ReadOnlyViewBtns = ({
   title,
   description,
 }) => {
-  const { confimationWindow, updateTaskList, updateSpecificTask } =
+  const { confimationWindow, uploadTask, uploadUpdatedTask } =
     useContext(HelperMethodsContext);
   const dispatch = useDispatch();
+
+  const isValidTitle = () => {
+    if (title === '') {
+      dispatch(setLoader(false));
+      dispatch(setErrorMessage('The title field can not be empty'));
+      return false;
+    }
+
+    return true;
+  }
 
   return (
     <>
@@ -45,10 +55,12 @@ export const ReadOnlyViewBtns = ({
           <ButtonUI
             title={'Update'}
             onPress={async () => {
+              if (!isValidTitle()) return;
+
               dispatch(setLoader(true));
-              if (await updateSpecificTask(taskId, title, description)) {
-                setTimeout(() => navigation.pop(), 100);
-              }
+              await uploadUpdatedTask(taskId, title, description);
+              Keyboard.dismiss();
+              setTimeout(() => navigation.pop(), 100);
               setTimeout(() => dispatch(setLoader(false)), 500);
             }}
           />
@@ -58,11 +70,12 @@ export const ReadOnlyViewBtns = ({
           <ButtonUI
             title={'Create'}
             onPress={async () => {
+              if (!isValidTitle()) return;
+
               Keyboard.dismiss();
               dispatch(setLoader(true));
-              if (await updateTaskList(title, description)) {
-                setTimeout(() => navigation.pop(), 100);
-              }
+              await uploadTask(title, description)
+              setTimeout(() => navigation.pop(), 100);
               setTimeout(() => dispatch(setLoader(false)), 500);
             }}
           />

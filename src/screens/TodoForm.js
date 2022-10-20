@@ -1,15 +1,17 @@
 import HelperMethodsContext from '../contexts/HelperMethodsContext';
-import HooksContext from '../contexts/HooksContext';
 import React, { useState, useEffect, useContext } from 'react';
 import { StyleSheet, View, ScrollView, Text } from 'react-native';
 import { InputField } from '../components/InputField';
 import { ReadOnlyViewBtns } from '../components/ReadOnlyViewBtns';
+import { useDispatch, useSelector } from 'react-redux';
+import { setErrorMessage } from '../features/error';
 
 export const TodoForm = ({ navigation, route }) => {
   const taskId = route.params?.taskId;
   const view = route.params?.view;
   const status = route.params?.status;
-  const { errorMessage, setErrorMessage } = useContext(HooksContext);
+  const errorMessage = useSelector(state => state.error.value);
+  const dispatch = useDispatch();
   const { getTodo } = useContext(HelperMethodsContext);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -24,7 +26,7 @@ export const TodoForm = ({ navigation, route }) => {
 
   useEffect(() => {
     if (!title.length !== 0) {
-      setErrorMessage('');
+      dispatch(setErrorMessage(''));
     }
   }, [title]);
 
