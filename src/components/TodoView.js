@@ -1,5 +1,9 @@
-import React, { useState } from 'react';
-import { toggleCompletion } from '../features/todo';
+import React, { useEffect, useState } from 'react';
+import {
+  resetErrorMessage,
+  resetStatus,
+  toggleCompletion,
+} from '../features/todo';
 import {
   View,
   Text,
@@ -7,59 +11,84 @@ import {
   TouchableOpacity,
   Image,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-export const TodoView = ({ title, status, id, timeStamp, navigation }) => {
+export const TodoView = ({ todo, navigation }) => {
+  const { id, title, is_completed, created_at } = todo;
   const [isMarking, setisMarking] = useState(false);
   const userId = useSelector(state => state.user.user.id);
+  const requestStatus = useSelector(state => state.todo.status);
+  const error = useSelector(state => state.todo.error);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (requestStatus === 'toggleError') {
+      Alert.alert('An issue occured, Please try again', error, [
+        {
+          text: 'Okay',
+        },
+      ]);
+      setisMarking(false);
+      dispatch(resetStatus());
+      dispatch(resetErrorMessage());
+    }
+
+    if (requestStatus === 'resolvedToggle') {
+      setisMarking(false);
+      dispatch(resetStatus());
+      dispatch(resetErrorMessage());
+    }
+  }, [requestStatus]);
 
   return (
     <View style={styles.todoConatainer}>
       <TouchableOpacity
         style={styles.titleContainer}
         onPress={() => {
-          navigation.navigate('TodoForm', { taskId: id, view: 'read', status });
+          navigation.navigate('TodoForm', {
+            view: 'read',
+            todo,
+          });
         }}
       >
         <Text
           style={
-            status
-              ? styles.completedTaskText
-              : styles.pendingTaskText
+            is_completed ? styles.completedTaskText : styles.pendingTaskText
           }
         >
           {title}
         </Text>
       </TouchableOpacity>
-      <Text style={styles.timeStamp}>{timeStamp}</Text>
+      <Text style={styles.timeStamp}>{created_at.slice(0, 10)}</Text>
 
-      {status
-        ? (<View style={styles.updateBtn}></View>)
-        : (
-          <TouchableOpacity
-            style={styles.updateBtn}
-            onPress={() => {
-              navigation.navigate('TodoForm', { taskId: id, view: 'update' });
-            }}
-          >
-            <Image style={styles.icon} source={require('../icons/edit.png')} />
-          </TouchableOpacity>
-        )}
+      {is_completed ? (
+        <View style={styles.updateBtn}></View>
+      ) : (
+        <TouchableOpacity
+          style={styles.updateBtn}
+          onPress={() => {
+            navigation.navigate('TodoForm', { todo, view: 'update' });
+          }}
+        >
+          <Image style={styles.icon} source={require('../icons/edit.png')} />
+        </TouchableOpacity>
+      )}
 
       {isMarking ? (
         <ActivityIndicator size={24} color="black" />
       ) : (
         <TouchableOpacity
           style={styles.checkbox}
-          onPress={async () => {
+          onPress={() => {
             setisMarking(true);
-            dispatch(toggleCompletion({ taskId: id, status, userId }));
-            setTimeout(() => setisMarking(false), 200);
+            dispatch(
+              toggleCompletion({ taskId: id, status: is_completed, userId })
+            );
           }}
         >
-          {status ? (
+          {is_completed ? (
             <Image source={require('../icons/checkmark.png')} />
           ) : (
             <></>
@@ -91,7 +120,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignSelf: 'center',
     borderWidth: 0.5,
-    borderColor: '#FFC651',
+    borderColor: 'orange',
     borderRadius: 12,
   },
   updateBtn: {

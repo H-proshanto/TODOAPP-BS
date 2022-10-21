@@ -1,25 +1,25 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { StyleSheet, View, ScrollView, Text } from 'react-native';
+import { StyleSheet, View, ScrollView, Text, Alert } from 'react-native';
 import { InputField } from '../components/InputField';
 import { ReadOnlyViewBtns } from '../components/ReadOnlyViewBtns';
 import { useDispatch, useSelector } from 'react-redux';
 import { setErrorMessage } from '../features/error';
 
 export const TodoForm = ({ navigation, route }) => {
-  const taskId = route.params?.taskId;
+  const todo = route.params?.todo;
+  const taskId = todo?.id;
   const view = route.params?.view;
-  const status = route.params?.status;
+  const status = todo?.is_completed;
   const errorMessage = useSelector(state => state.error.value);
+  const requestError = useSelector(state => state.todo.error);
   const dispatch = useDispatch();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const taskList = useSelector(state => state.todo.taskList)
 
   useEffect(() => {
     if (view === 'read' || view === 'update') {
-      const { title, description } = taskList.find(task => task.id === taskId);
-      setTitle(title);
-      setDescription(description);
+      setTitle(todo?.title);
+      setDescription(todo?.description);
     }
   }, []);
 
@@ -28,6 +28,16 @@ export const TodoForm = ({ navigation, route }) => {
       dispatch(setErrorMessage(''));
     }
   }, [title]);
+
+  useEffect(() => {
+    if (requestError.length) {
+      Alert.alert('An issue occured', requestError, [
+        {
+          text: 'Okay',
+        },
+      ]);
+    }
+  }, [requestError]);
 
   return (
     <View style={styles.container}>

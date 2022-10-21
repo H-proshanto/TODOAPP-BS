@@ -7,13 +7,7 @@ export const TodoList = ({ navigation }) => {
   const { taskList } = useSelector(state => state.todo);
 
   const renderItem = ({ item }) => (
-    <TodoView
-      title={item.title}
-      status={item.is_completed}
-      id={item.id}
-      timeStamp={item.timeStamp}
-      navigation={navigation}
-    />
+    <TodoView todo={item} navigation={navigation} />
   );
 
   return (

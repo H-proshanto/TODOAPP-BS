@@ -9,32 +9,25 @@ import {
 import { useSelector } from 'react-redux';
 
 export const ButtonUI = ({ title, onPress, body, button, text }) => {
-  const isLoading = useSelector(state => state.loader.value);
+  const isLoading = useSelector(
+    state => state.todo.status !== 'idle' || state.user.status !== 'idle'
+  );
 
   return (
     <View style={body || styles.body}>
-      <TouchableOpacity
-        disabled={isLoading}
-        onPress={onPress}
-      >
+      <TouchableOpacity disabled={isLoading} onPress={onPress}>
         <View style={button || styles.button}>
           {isLoading &&
-            title !== 'Create New' &&
-            title !== 'logout' &&
-            title !== 'Edit'
-            ?
-            (
-              <ActivityIndicator
-                style={title === 'Next' ? styles.loginLoader : styles.text}
-                color="#ffffff"
-              />
-            )
-            :
-            (
-              <Text style={text || styles.text}>
-                {title}
-              </Text>
-            )}
+          title !== 'Create New' &&
+          title !== 'logout' &&
+          title !== 'Edit' ? (
+            <ActivityIndicator
+              style={title === 'Next' ? styles.loginLoader : styles.text}
+              color="#ffffff"
+            />
+          ) : (
+            <Text style={text || styles.text}>{title}</Text>
+          )}
         </View>
       </TouchableOpacity>
     </View>
@@ -64,5 +57,5 @@ const styles = StyleSheet.create({
     paddingBottom: 6,
     paddingLeft: 11,
     paddingRight: 11,
-  }
+  },
 });

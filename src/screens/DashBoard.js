@@ -1,29 +1,35 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { ButtonUI } from '../components/ButtonUI.js';
 import { TodoList } from '../components/TodoList';
 import { ErrorUI } from '../components/ErrorUI.js';
-import { fetchAllTodo } from '../features/todo.js';
+import { fetchAllTodo, resetStatus } from '../features/todo.js';
 import { useDispatch, useSelector } from 'react-redux';
 
 export const DashBoard = ({ navigation }) => {
-  const errorMessage = useSelector(state => state.error.value)
-  const isLoading = useSelector(state => state.loader.value);
+  const requestStatus = useSelector(state => state.todo.status);
+  const [isLoading, setIsLoading] = useState(true);
   const userId = useSelector(state => state.user.user.id);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchAllTodo(userId));
-  }, [])
+  }, []);
 
-  if (errorMessage) return (<ErrorUI />)
+  useEffect(() => {
+    if (requestStatus === 'resolvedFetchAllTodo') {
+      dispatch(resetStatus());
+      setTimeout(() => setIsLoading(false), 500);
+    }
+  }, [requestStatus]);
+
+  if (requestStatus === 'error') return <ErrorUI />;
 
   return (
     <View style={styles.container}>
-      {isLoading
-        ?
+      {isLoading ? (
         <ActivityIndicator size={49} style={styles.loader} color="#89CFF0" />
-        :
+      ) : (
         <>
           <View style={styles.dashboard}>
             <Text style={styles.dashboardText}>My ToDos</Text>
@@ -33,13 +39,15 @@ export const DashBoard = ({ navigation }) => {
                 title={'Create New'}
                 button={styles.dashboardButton}
                 text={styles.dashboardBtnText}
-                onPress={() => navigation.navigate('TodoForm')}
+                onPress={() => {
+                  navigation.navigate('TodoForm');
+                }}
               />
             </View>
           </View>
           <TodoList navigation={navigation} />
         </>
-      }
+      )}
     </View>
   );
 };

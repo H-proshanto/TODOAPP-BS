@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Alert, Keyboard, StyleSheet, View } from 'react-native';
 import { ButtonUI } from '../components/ButtonUI';
 import { useDispatch, useSelector } from 'react-redux';
-import { setLoader } from '../features/loader';
 import { setErrorMessage } from '../features/error';
-import { uploadUpdatedTask } from '../features/todo';
+import {
+  resetErrorMessage,
+  resetStatus,
+  uploadUpdatedTask,
+} from '../features/todo';
 import { uploadTask } from '../features/todo';
 import { deleteTask } from '../features/todo';
 
@@ -18,27 +21,42 @@ export const ReadOnlyViewBtns = ({
 }) => {
   const userId = useSelector(state => state.user.user.id);
   const dispatch = useDispatch();
+  const requestStatus = useSelector(state => state.todo.status);
+  const error = useSelector(state => state.todo.error);
+
+  useEffect(() => {
+    if (requestStatus === 'error') {
+      Alert.alert('An issue occured', error, [
+        {
+          text: 'Okay',
+        },
+      ]);
+      dispatch(resetStatus());
+      dispatch(resetErrorMessage());
+    }
+
+    if (requestStatus === 'resolved') {
+      navigation.pop();
+      setTimeout(() => dispatch(resetStatus()), 200);
+    }
+  }, [requestStatus]);
 
   const isValidTitle = () => {
     if (title === '') {
-      dispatch(setLoader(false));
       dispatch(setErrorMessage('The title field can not be empty'));
       return false;
     }
 
     return true;
-  }
+  };
 
-  const confimationWindow = (userId, taskId, navigation) => {
+  const confimationWindow = (userId, taskId) => {
     Alert.alert('Are you sure you want to delete this task', '', [
       {
         text: 'Confirm',
-        style: "destructive",
-        onPress: async () => {
-          dispatch(deleteTask({ taskId, userId }))
-          setTimeout(() => dispatch(setLoader(true)), 0)
-          setTimeout(() => navigation.pop(), 100)
-          setTimeout(() => dispatch(setLoader(false)), 500);
+        style: 'destructive',
+        onPress: () => {
+          dispatch(deleteTask({ taskId, userId }));
         },
       },
       {
@@ -51,16 +69,16 @@ export const ReadOnlyViewBtns = ({
     <>
       {view === 'read' ? (
         <View style={styles.buttonContainer}>
-          {status
-            ? (<></>)
-            : (
-              <ButtonUI
-                title={'Edit'}
-                onPress={() =>
-                  navigation.navigate('TodoForm', { taskId, view: 'update' })
-                }
-              />
-            )}
+          {status ? (
+            <></>
+          ) : (
+            <ButtonUI
+              title={'Edit'}
+              onPress={() =>
+                navigation.navigate('TodoForm', { taskId, view: 'update' })
+              }
+            />
+          )}
           <ButtonUI
             title={'Delete'}
             button={styles.deleteButton}
@@ -73,14 +91,13 @@ export const ReadOnlyViewBtns = ({
         <View style={styles.buttonContainer}>
           <ButtonUI
             title={'Update'}
-            onPress={async () => {
+            onPress={() => {
               if (!isValidTitle()) return;
 
-              dispatch(uploadUpdatedTask({ userId, taskId, title, description }))
-              setTimeout(() => dispatch(setLoader(true)), 0);
+              dispatch(
+                uploadUpdatedTask({ userId, taskId, title, description })
+              );
               Keyboard.dismiss();
-              setTimeout(() => navigation.pop(), 100);
-              setTimeout(() => dispatch(setLoader(false)), 500);
             }}
           />
         </View>
@@ -88,14 +105,11 @@ export const ReadOnlyViewBtns = ({
         <View style={styles.buttonContainer}>
           <ButtonUI
             title={'Create'}
-            onPress={async () => {
+            onPress={() => {
               if (!isValidTitle()) return;
 
               Keyboard.dismiss();
               dispatch(uploadTask({ userId, title, description }));
-              setTimeout(() => dispatch(setLoader(true)), 0);
-              setTimeout(() => navigation.pop(), 100);
-              setTimeout(() => dispatch(setLoader(false)), 500);
             }}
           />
         </View>

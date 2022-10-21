@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, TextInput, ScrollView, Alert } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  ScrollView,
+  Alert,
+} from 'react-native';
 import { ButtonUI } from '../components/ButtonUI';
 import { login } from '../features/user';
 import { useDispatch, useSelector } from 'react-redux';
-import { setLoader } from '../features/loader';
 import { setErrorMessage } from '../features/error';
+import { resetStatus } from '../features/user';
 
 export const Home = ({ navigation }) => {
   const [isMaxLength, setIsMaxLength] = useState(false);
@@ -25,22 +32,22 @@ export const Home = ({ navigation }) => {
   }, [userName]);
 
   useEffect(() => {
-    if (userStatus === 'running') dispatch(setLoader(true));
     if (userStatus === 'error') {
-      dispatch(setLoader(false));
-      Alert.alert('An issue occured', error, [{
-        text: 'Okay',
-      }]);
+      Alert.alert('An issue occured', error, [
+        {
+          text: 'Okay',
+        },
+      ]);
     }
 
     if (userStatus === 'resolved') {
-      setTimeout(() => dispatch(setLoader(false)), 500);
       navigation.reset({
         index: 0,
         routes: [{ name: 'DashBoard' }],
       });
+      dispatch(resetStatus());
     }
-  }, [userStatus])
+  }, [userStatus]);
 
   const isValidUserName = () => {
     const isLengthNull = userName.length === 0;
@@ -48,7 +55,6 @@ export const Home = ({ navigation }) => {
     if (isMaxLength) return false;
 
     if (isLengthNull) {
-      dispatch(setLoader(false));
       dispatch(setErrorMessage('The User name can not be empty'));
       return false;
     }
@@ -68,6 +74,7 @@ export const Home = ({ navigation }) => {
             placeholder="Your Name"
             onChangeText={setUserName}
             value={userName}
+            editable={userStatus === 'running' ? false : true}
           />
           {errorMessage !== '' ? (
             <Text style={styles.errorMessage}>{errorMessage}</Text>
@@ -81,9 +88,8 @@ export const Home = ({ navigation }) => {
           body={styles.loginContainer}
           button={styles.loginButton}
           text={styles.loginText}
-          onPress={async () => {
-            if (isValidUserName())
-              dispatch(login(userName));
+          onPress={() => {
+            if (isValidUserName()) dispatch(login(userName));
           }}
         />
       </ScrollView>
