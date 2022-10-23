@@ -5,7 +5,11 @@ import axios from 'axios';
 
 const initialState = {
   status: 'idle',
-  user: {},
+  user: {
+    id: null,
+    username: '',
+    email: ''
+  },
   error: '',
 };
 
