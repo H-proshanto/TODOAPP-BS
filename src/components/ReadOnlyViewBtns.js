@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
-import { Alert, Keyboard, StyleSheet, View } from 'react-native';
+import { setErrorMessage } from '../features/error';
 import { ButtonUI } from '../components/ButtonUI';
 import { useDispatch, useSelector } from 'react-redux';
-import { setErrorMessage } from '../features/error';
+import { Alert, Keyboard, StyleSheet, View } from 'react-native';
 import {
   resetErrorMessage,
   resetStatus,
   uploadUpdatedTask,
+  uploadTask,
+  deleteTask
 } from '../features/todo';
-import { uploadTask } from '../features/todo';
-import { deleteTask } from '../features/todo';
 
 export const ReadOnlyViewBtns = ({
   navigation,

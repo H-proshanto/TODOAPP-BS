@@ -1,9 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { ButtonUI } from './ButtonUI';
-import { useDispatch, useSelector } from 'react-redux';
 import { clearList } from '../features/todo';
 import { logout } from '../features/user';
+import { ButtonUI } from './ButtonUI';
+import { useDispatch, useSelector } from 'react-redux';
+import { StyleSheet, Text, View } from 'react-native';
 
 export const HeaderUI = ({ navigation }) => {
   const { user } = useSelector(state => state.user);

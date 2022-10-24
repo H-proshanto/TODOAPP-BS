@@ -1,20 +1,20 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { StyleSheet, View, ScrollView, Text, Alert } from 'react-native';
+import React, { useState, useEffect } from 'react';
 import { InputField } from '../components/InputField';
+import { setErrorMessage } from '../features/error';
 import { ReadOnlyViewBtns } from '../components/ReadOnlyViewBtns';
 import { useDispatch, useSelector } from 'react-redux';
-import { setErrorMessage } from '../features/error';
+import { StyleSheet, View, ScrollView, Text, Alert } from 'react-native';
 
 export const TodoForm = ({ navigation, route }) => {
-  const todo = route.params?.todo;
-  const taskId = todo?.id;
-  const view = route.params?.view;
-  const status = todo?.is_completed;
   const errorMessage = useSelector(state => state.error.value);
   const requestError = useSelector(state => state.todo.error);
   const dispatch = useDispatch();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const todo = route.params?.todo;
+  const taskId = todo?.id;
+  const view = route.params?.view;
+  const status = todo?.is_completed;
 
   useEffect(() => {
     if (view === 'read' || view === 'update') {

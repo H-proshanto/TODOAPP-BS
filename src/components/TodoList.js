@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, StyleSheet, FlatList } from 'react-native';
 import { TodoView } from './TodoView';
 import { useSelector } from 'react-redux';
+import { View, StyleSheet, FlatList } from 'react-native';
 
 export const TodoList = ({ navigation }) => {
   const { taskList } = useSelector(state => state.todo);

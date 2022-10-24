@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { ButtonUI } from '../components/ButtonUI.js';
 import { TodoList } from '../components/TodoList';
 import { ErrorUI } from '../components/ErrorUI.js';
 import { fetchAllTodo, resetStatus } from '../features/todo.js';
 import { useDispatch, useSelector } from 'react-redux';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 
 export const DashBoard = ({ navigation }) => {
   const requestStatus = useSelector(state => state.todo.status);

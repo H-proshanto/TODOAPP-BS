@@ -1,4 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { ButtonUI } from '../components/ButtonUI';
+import { setErrorMessage } from '../features/error';
+import { login, resetStatus } from '../features/user';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   StyleSheet,
   Text,
@@ -7,14 +11,8 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
-import { ButtonUI } from '../components/ButtonUI';
-import { login } from '../features/user';
-import { useDispatch, useSelector } from 'react-redux';
-import { setErrorMessage } from '../features/error';
-import { resetStatus } from '../features/user';
 
 export const Home = ({ navigation }) => {
-  const [isMaxLength, setIsMaxLength] = useState(false);
   const [userName, setUserName] = useState('');
   const errorMessage = useSelector(state => state.error.value);
   const error = useSelector(state => state.user.error);
@@ -23,10 +21,8 @@ export const Home = ({ navigation }) => {
 
   useEffect(() => {
     if (userName.length > 5) {
-      setIsMaxLength(true);
       dispatch(setErrorMessage('Maximum characters allowed : 5'));
     } else {
-      setIsMaxLength(false);
       dispatch(setErrorMessage(''));
     }
   }, [userName]);
@@ -52,7 +48,7 @@ export const Home = ({ navigation }) => {
   const isValidUserName = () => {
     const isLengthNull = userName.length === 0;
 
-    if (isMaxLength) return false;
+    if (userName.length > 5) return false;
 
     if (isLengthNull) {
       dispatch(setErrorMessage('The User name can not be empty'));

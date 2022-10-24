@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import {
   View,
   Text,
@@ -6,7 +7,6 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import { useSelector } from 'react-redux';
 
 export const ButtonUI = ({ title, onPress, body, button, text }) => {
   const isLoading = useSelector(
@@ -18,9 +18,9 @@ export const ButtonUI = ({ title, onPress, body, button, text }) => {
       <TouchableOpacity disabled={isLoading} onPress={onPress}>
         <View style={button || styles.button}>
           {isLoading &&
-          title !== 'Create New' &&
-          title !== 'logout' &&
-          title !== 'Edit' ? (
+            title !== 'Create New' &&
+            title !== 'logout' &&
+            title !== 'Edit' ? (
             <ActivityIndicator
               style={title === 'Next' ? styles.loginLoader : styles.text}
               color="#ffffff"

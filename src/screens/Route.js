@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import { ActivityIndicator, StyleSheet, View, } from 'react-native';
 import { useSelector } from 'react-redux';
+import { ActivityIndicator, StyleSheet, View, } from 'react-native';
 
 
 export const Route = ({ navigation }) => {

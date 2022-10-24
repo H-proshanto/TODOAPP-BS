@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   resetErrorMessage,
   resetStatus,
@@ -13,7 +14,6 @@ import {
   ActivityIndicator,
   Alert,
 } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
 
 export const TodoView = ({ todo, navigation }) => {
   const { id, title, is_completed, created_at } = todo;

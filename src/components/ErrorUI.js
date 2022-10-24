@@ -1,7 +1,7 @@
 import React from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllTodo } from '../features/todo.js';
+import { useDispatch, useSelector } from 'react-redux';
+import { Button, StyleSheet, Text, View } from 'react-native';
 
 export const ErrorUI = () => {
   const errorMessage = useSelector(state => state.todo.error);
