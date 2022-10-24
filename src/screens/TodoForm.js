@@ -36,7 +36,7 @@ export const TodoForm = ({ navigation, route }) => {
 
   return (
     <Formik
-      initialValues={{ title: `${todo?.title || ''}`, description: '' }}
+      initialValues={{ title: `${todo?.title || ''}`, description: `${todo?.description || ''}` }}
       validate={validate}
     >
       {({ handleChange, handleBlur, handleSubmit, values, errors }) => (

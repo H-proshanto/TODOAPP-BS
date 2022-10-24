@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { setErrorMessage } from '../features/error';
 import { ButtonUI } from '../components/ButtonUI';
 import { useDispatch, useSelector } from 'react-redux';
 import { Alert, Keyboard, StyleSheet, View } from 'react-native';
@@ -43,7 +42,6 @@ export const ReadOnlyViewBtns = ({
 
   const isValidTitle = () => {
     if (title === '') {
-      dispatch(setErrorMessage('The title field can not be empty'));
       return false;
     }
 

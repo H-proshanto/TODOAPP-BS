@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { ButtonUI } from '../components/ButtonUI';
-import { setErrorMessage } from '../features/error';
 import { login, resetStatus } from '../features/user';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -11,21 +10,12 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
+import { Formik } from 'formik';
 
 export const Home = ({ navigation }) => {
-  const [userName, setUserName] = useState('');
-  const errorMessage = useSelector(state => state.error.value);
   const error = useSelector(state => state.user.error);
   const userStatus = useSelector(state => state.user.status);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (userName.length > 5) {
-      dispatch(setErrorMessage('Maximum characters allowed : 5'));
-    } else {
-      dispatch(setErrorMessage(''));
-    }
-  }, [userName]);
 
   useEffect(() => {
     if (userStatus === 'error') {
@@ -45,50 +35,59 @@ export const Home = ({ navigation }) => {
     }
   }, [userStatus]);
 
-  const isValidUserName = () => {
-    const isLengthNull = userName.length === 0;
 
-    if (userName.length > 5) return false;
+  const validate = (values) => {
+    const errors = {};
 
-    if (isLengthNull) {
-      dispatch(setErrorMessage('The User name can not be empty'));
-      return false;
+    if (!values.username) {
+      errors.username = 'username is required';
+    } else if (values.username.length > 5) {
+      errors.username = `username can't be larger than 5 characters`;
     }
 
-    return true;
-  };
+    return errors;
+  }
 
   return (
     <View style={styles.container}>
-      <ScrollView keyboardShouldPersistTaps="handled">
-        <View style={styles.headerContainer}>
-          <Text style={styles.headerText}>Simple ToDo</Text>
-        </View>
-        <View style={styles.loginTextContainer}>
-          <TextInput
-            style={styles.loginInput}
-            placeholder="Your Name"
-            onChangeText={setUserName}
-            value={userName}
-            editable={userStatus === 'running' ? false : true}
-          />
-          {errorMessage !== '' ? (
-            <Text style={styles.errorMessage}>{errorMessage}</Text>
-          ) : (
-            <></>
-          )}
-        </View>
-        <ButtonUI
-          navigation={navigation}
-          title="Next"
-          body={styles.loginContainer}
-          button={styles.loginButton}
-          text={styles.loginText}
-          onPress={() => {
-            if (isValidUserName()) dispatch(login(userName));
-          }}
-        />
-      </ScrollView>
+      <Formik
+        initialValues={{ username: '' }}
+        onSubmit={values => dispatch(login(values.username))}
+        validate={validate}
+      >
+        {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
+          <ScrollView keyboardShouldPersistTaps="handled">
+            <View style={styles.headerContainer}>
+              <Text style={styles.headerText}>Simple ToDo</Text>
+            </View>
+            <View style={styles.loginTextContainer}>
+              <TextInput
+                style={styles.loginInput}
+                placeholder="Your Name"
+                onChangeText={handleChange('username')}
+                onBlur={handleBlur('username')}
+                value={values.username}
+                editable={userStatus === 'running' ? false : true}
+              />
+              {errors.username ? (
+                <Text style={styles.errorMessage}>{errors.username}</Text>
+              ) : (
+                <></>
+              )}
+            </View>
+            <ButtonUI
+              navigation={navigation}
+              title="Next"
+              body={styles.loginContainer}
+              button={styles.loginButton}
+              text={styles.loginText}
+              onPress={errors.username ? null : handleSubmit}
+            />
+          </ScrollView>
+        )}
+
+      </Formik>
+
     </View>
   );
 };
