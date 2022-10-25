@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { ButtonUI } from '../components/ButtonUI';
 import { login, resetStatus } from '../features/user';
 import { useDispatch, useSelector } from 'react-redux';

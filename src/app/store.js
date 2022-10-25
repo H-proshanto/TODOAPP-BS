@@ -1,7 +1,6 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import thunk from 'redux-thunk';
-import errorReducer from '../features/error';
 import userReducer from '../features/user';
 import todoReducer from '../features/todo';
 import persistReducer from 'redux-persist/es/persistReducer';
@@ -13,7 +12,6 @@ const persistConfig = {
 }
 
 const rootReducer = combineReducers({
-  error: errorReducer,
   user: userReducer,
   todo: todoReducer,
 })

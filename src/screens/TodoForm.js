@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { InputField } from '../components/InputField';
-import { setErrorMessage } from '../features/error';
 import { ReadOnlyViewBtns } from '../components/ReadOnlyViewBtns';
 import { useSelector } from 'react-redux';
 import { StyleSheet, View, ScrollView, Text, Alert } from 'react-native';
 import { Formik } from 'formik';
 
 export const TodoForm = ({ navigation, route }) => {
-  const errorMessage = useSelector(state => state.error.value);
   const requestError = useSelector(state => state.todo.error);
   const todo = route.params?.todo;
   const taskId = todo?.id;
@@ -39,7 +37,7 @@ export const TodoForm = ({ navigation, route }) => {
       initialValues={{ title: `${todo?.title || ''}`, description: `${todo?.description || ''}` }}
       validate={validate}
     >
-      {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
+      {({ handleChange, handleBlur, values, errors }) => (
         <View style={styles.container}>
           <ScrollView>
             <InputField
