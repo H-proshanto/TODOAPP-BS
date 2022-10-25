@@ -18,7 +18,7 @@ import {
 export const TodoView = ({ todo, navigation }) => {
   const { id, title, is_completed, created_at } = todo;
   const [isMarking, setisMarking] = useState(false);
-  const userId = useSelector(state => state.user.user.id);
+  const userId = useSelector(state => state.user.info.id);
   const requestStatus = useSelector(state => state.todo.status);
   const error = useSelector(state => state.todo.error);
   const dispatch = useDispatch();

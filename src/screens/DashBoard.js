@@ -9,7 +9,7 @@ import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 export const DashBoard = ({ navigation }) => {
   const requestStatus = useSelector(state => state.todo.status);
   const [isLoading, setIsLoading] = useState(true);
-  const userId = useSelector(state => state.user.user.id);
+  const userId = useSelector(state => state.user.info.id);
   const dispatch = useDispatch();
 
   useEffect(() => {

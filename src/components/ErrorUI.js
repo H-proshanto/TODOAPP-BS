@@ -6,7 +6,7 @@ import { Button, StyleSheet, Text, View } from 'react-native';
 export const ErrorUI = () => {
   const errorMessage = useSelector(state => state.todo.error);
   const dispatch = useDispatch();
-  const userId = useSelector(state => state.user.user.id);
+  const userId = useSelector(state => state.user.info.id);
 
   return (
     <View style={styles.errorContainer}>

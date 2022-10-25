@@ -1,17 +1,20 @@
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ActivityIndicator, StyleSheet, View, } from 'react-native';
 
 
+
 export const Route = ({ navigation }) => {
-    const { user } = useSelector(state => state.user);
+    const { isLoggedIn } = useSelector(state => state.user);
+    const dispatch = useDispatch();
+
 
     useEffect(() => {
         setTimeout(selectRoute, 700);
     })
 
     const selectRoute = () => {
-        if (user.id !== null) {
+        if (isLoggedIn) {
             navigation.reset({
                 index: 0,
                 routes: [{ name: 'DashBoard' }],

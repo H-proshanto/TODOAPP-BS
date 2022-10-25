@@ -19,7 +19,7 @@ export const ReadOnlyViewBtns = ({
   title,
   description,
 }) => {
-  const userId = useSelector(state => state.user.user.id);
+  const userId = useSelector(state => state.user.info.id);
   const dispatch = useDispatch();
   const requestStatus = useSelector(state => state.todo.status);
   const error = useSelector(state => state.todo.error);

@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { StyleSheet, Text, View } from 'react-native';
 
 export const HeaderUI = ({ navigation }) => {
-  const { user } = useSelector(state => state.user);
+  const username = useSelector(state => state.user.info.username);
   const dispatch = useDispatch();
 
   const clearAllData = () => {
@@ -16,7 +16,7 @@ export const HeaderUI = ({ navigation }) => {
 
   return (
     <View style={styles.userInfo}>
-      <Text style={styles.username}>{`Mr.${user.username}`}</Text>
+      <Text style={styles.username}>{`Mr.${username}`}</Text>
       <ButtonUI
         title={'logout'}
         body={styles.logoutBody}

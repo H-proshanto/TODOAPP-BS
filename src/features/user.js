@@ -5,7 +5,8 @@ import axios from 'axios';
 
 const initialState = {
   status: 'idle',
-  user: {
+  isLoggedIn: false,
+  info: {
     id: null,
     username: '',
     email: ''
@@ -42,13 +43,15 @@ export const userSlice = createSlice({
         state.status = 'running';
       })
       .addCase(login.fulfilled, (state, action) => {
-        state.user = action.payload;
+        state.info = action.payload;
         state.error = '';
+        state.isLoggedIn = true;
         state.status = 'resolved';
       })
       .addCase(login.rejected, (state, action) => {
-        state.user = {};
+        state.info = {};
         state.error = action.error?.message;
+        state.isLoggedIn = false;
         state.status = 'error';
       });
   },
