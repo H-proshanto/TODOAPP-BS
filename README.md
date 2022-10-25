@@ -12,11 +12,13 @@
 git clone git@github.com:H-proshanto/TODOAPP-BS.git
 ```
 <p>Open the folder where the repo is stored. Then use `terminal/bash` and install all the dependencies.</p>
+
 ```shell
 npm install 
 ```
 
 <p>To run the development server</p>
+
 ```shell
 npm start
 ```
